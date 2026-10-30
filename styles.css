@@ -500,7 +500,8 @@ p:last-child { margin-bottom: 0; }
 
 /* the scene (main.js adds .is-scene): #about lies over the hero, cut to the book by clip-path */
 .is-scene .hero { height: 100svh; min-height: 0; }
-.is-scene .doubts { z-index: 1; min-height: 100svh; margin-top: -100svh; }
+/* the page lies under the masthead while it is pinned, so its heading starts below the masthead */
+.is-scene .doubts { z-index: 1; min-height: 100svh; margin-top: -100svh; padding-top: calc(var(--header-h) + var(--space-xl)); }
 .is-scene .hero-inner,
 .is-scene .scroll-cue { pointer-events: none; }
 /* the page's own content waits inside the book and rises in at the end of the scene */
@@ -583,15 +584,22 @@ p:last-child { margin-bottom: 0; }
   display: grid;
   gap: var(--space-md);
 }
-.note { display: grid; gap: var(--space-3xs); }
+.note { display: grid; gap: var(--space-2xs); }
 .note dt {
   font-size: var(--fs-small);
+  line-height: 1.45;
   color: var(--color-on-night-2);
 }
 .note dd {
   margin: 0;
-  font-weight: 500;
+  line-height: 1.5;
   color: var(--color-on-night);
+}
+/* phones: the thoughts read as a calm list, a size down, with air between them */
+@media (max-width: 47.99rem) {
+  .doubts h2 { font-size: var(--text-2xl); }
+  .notes { gap: var(--space-lg); }
+  .note dd { font-size: 1.0625rem; }
 }
 
 .ladder {
@@ -743,7 +751,6 @@ p:last-child { margin-bottom: 0; }
 }
 .lesson h3 { margin-bottom: var(--space-xs); }
 .lesson p { max-width: 52ch; }
-.lesson .text-link { justify-self: start; }
 
 /* ---------- Prices ---------- */
 .prices {
@@ -751,21 +758,29 @@ p:last-child { margin-bottom: 0; }
   border-top: 1px solid var(--line);
 }
 
-.price-grid { display: grid; gap: var(--space-2xl); }
-.price { display: flex; flex-direction: column; }
-.price-sum { margin: var(--space-xs) 0 var(--space-lg); color: var(--grey-text); }
+/* the two plans stand side by side even on a phone, so they compare at a glance */
+.price-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 9.5rem), 1fr)); gap: var(--space-sm); }
+.price {
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-md) var(--space-sm);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-card);
+}
+.price h3 { font-size: var(--text-md); line-height: 1.25; }
+.price-sum { margin: var(--space-xs) 0 var(--space-md); font-size: var(--text-sm); color: var(--grey-text); }
 .price-num {
   display: block;
-  font-size: clamp(3rem, 2rem + 4vw, 4.75rem);
+  font-size: clamp(1.75rem, 1.2rem + 2.4vw, 3.25rem);
   font-weight: 500;
-  line-height: 1;
-  letter-spacing: -.03em;
+  line-height: 1.1;
+  letter-spacing: -.02em;
   font-variant-numeric: tabular-nums lining-nums;
   color: var(--ink);
 }
-.price-facts { list-style: none; margin: 0 0 var(--space-xl); padding: 0; border-top: 1px solid var(--line); }
-.price-facts li { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line); }
-.price .btn { align-self: flex-start; margin-top: auto; }
+.price-facts { list-style: none; margin: 0; padding: 0; font-size: var(--text-sm); line-height: 1.4; }
+.price-facts li { padding: var(--space-xs) 0; border-top: 1px solid var(--line); }
+.price-note { margin-top: var(--space-lg); font-size: var(--text-sm); }
 
 /* ---------- Enroll ---------- */
 .enroll {
@@ -774,13 +789,12 @@ p:last-child { margin-bottom: 0; }
 }
 /* the small spaced line over the heading, as on Badr Book */
 .kicker {
-  margin: 0 0 var(--space-sm);
-  font: 600 var(--text-xs)/1.4 var(--font-ui);
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+  margin: 0 0 var(--space-xs);
+  font: 500 0.8125rem/1.4 var(--font-ui);
+  letter-spacing: 0.02em;
   color: var(--grey-text);
 }
-.kicker strong { font-weight: 800; color: var(--ink); }
+.kicker strong { font-weight: 700; color: var(--ink); }
 
 .steps {
   list-style: none;
@@ -808,7 +822,14 @@ p:last-child { margin-bottom: 0; }
 /* the one action of the page: larger, with the Telegram mark */
 .steps .btn-primary { min-height: 60px; padding-inline: var(--space-xl); font-size: var(--text-md); }
 .btn-icon { flex: none; }
+/* phones: the step number sits small beside its title, so the steps take the full width */
 @media (max-width: 40rem) {
+  .enroll h2 { font-size: var(--text-2xl); }
+  .steps { margin-top: var(--space-lg); }
+  .steps > li { padding: 0 0 var(--space-xl) 2rem; }
+  .steps > li::before { top: 0; font-size: 1.5rem; }
+  .steps h3 { font-size: var(--text-lg); }
+  .steps p { font-size: 1rem; }
   .steps .cta-row .btn { width: 100%; }
 }
 
@@ -844,8 +865,18 @@ p:last-child { margin-bottom: 0; }
 .choice label:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .choice input:focus-visible { outline: none; }
 .choice input:disabled { opacity: 0.55; cursor: not-allowed; }
+/* phones: smaller chips in the interface face; the course list stacks, the two formats share a row */
 @media (max-width: 40rem) {
-  .choice label { flex: 1 1 100%; }
+  .choice { margin-top: var(--space-md); }
+  .choice label {
+    flex: 1 1 100%;
+    min-height: 44px;
+    padding-inline: var(--space-sm);
+    font: 600 var(--text-sm)/1.25 var(--font-ui);
+  }
+  .choice label:has(input:checked) { font-weight: 700; }
+  .choice:last-of-type label { flex: 1 1 0; }
+  .choice input { width: 16px; height: 16px; }
 }
 
 .chat {
@@ -875,6 +906,14 @@ p:last-child { margin-bottom: 0; }
 }
 .bubble p { margin: 0; color: var(--ink); }
 .bubble [lang="ar"] { font-size: 1.45rem; line-height: 1.6; }
+/* phones: the preview is a small strip under the steps, not a second card */
+@media (max-width: 40rem) {
+  .chat { padding: var(--space-sm); }
+  .chat figcaption { justify-content: flex-start; gap: 0 0.3em; margin-bottom: var(--space-sm); padding-bottom: var(--space-xs); }
+  .bubble { max-width: none; padding: var(--space-xs) var(--space-sm); }
+  .bubble p { font-size: 1rem; line-height: 1.45; }
+  .bubble [lang="ar"] { font-size: 1.25rem; }
+}
 
 /* ---------- FAQ ---------- */
 .faq {
@@ -929,34 +968,25 @@ p:last-child { margin-bottom: 0; }
   --color-focus: var(--color-focus-night);
   --line: color-mix(in oklch, var(--color-on-night-2) 22%, var(--color-night));
   --grey-text: var(--color-on-night-2);
-  padding-top: calc(var(--section) * .7);
+  padding-top: var(--space-xl);
   background: var(--color-night);
   color: var(--color-on-night);
 }
-.site-footer h2 { font-size: var(--fs-h3); margin-bottom: var(--space-md); max-width: none; color: var(--color-on-night); }
-.site-footer .contact-name { text-decoration-color: var(--color-accent); }
-.site-footer .contact-list a:hover .contact-name { color: var(--color-accent-2); }
-.footer-grid { display: grid; gap: var(--space-xl); }
+.site-footer h2 { font-size: var(--text-lg); margin-bottom: var(--space-md); max-width: none; color: var(--color-on-night); }
+.footer-grid { display: grid; gap: var(--space-lg); }
 
-.contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2xs); }
-.contact-list a {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  gap: var(--space-3xs) var(--space-sm);
-  padding: var(--space-xs) 0;
-  text-decoration: none;
+/* the contacts are real buttons: gold for the teacher, outline for the channel */
+.contact-list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-sm); }
+.contact-list .btn { min-height: 48px; }
+.site-footer .btn-outline { border-color: var(--color-on-night-2); color: var(--color-on-night); }
+.site-footer .btn-outline:hover { background: var(--color-on-night); border-color: var(--color-on-night); color: var(--color-night); }
+.site-footer .btn-outline:active { background: var(--color-on-night-2); border-color: var(--color-on-night-2); color: var(--color-night); }
+@media (max-width: 40rem) {
+  .contact-list { display: grid; }
+  .contact-list .btn { width: 100%; }
 }
-.contact-name {
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 4px;
-}
-.contact-list a:hover .contact-name { color: var(--blue); text-decoration-thickness: 2px; }
-.contact-handle { color: var(--grey-text); overflow-wrap: anywhere; }
 
-.footer-wish { color: var(--grey-text); max-width: 34ch; }
+.footer-wish { font-size: var(--text-sm); color: var(--grey-text); max-width: 34ch; }
 
 .footer-base {
   display: flex;
@@ -964,8 +994,8 @@ p:last-child { margin-bottom: 0; }
   align-items: center;
   justify-content: space-between;
   gap: var(--space-md);
-  margin-top: var(--space-2xl);
-  padding-block: var(--space-lg);
+  margin-top: var(--space-xl);
+  padding-block: var(--space-md);
   border-top: 1px solid var(--line);
   font-size: var(--fs-small);
   color: var(--grey-text);
@@ -988,9 +1018,12 @@ p:last-child { margin-bottom: 0; }
 
   .teacher-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: start; }
 
-  .lesson { grid-template-columns: 13.5rem minmax(0, 1fr) auto; gap: var(--space-xl); align-items: center; }
+  .lesson { grid-template-columns: 13.5rem minmax(0, 1fr); gap: var(--space-xl); align-items: center; }
 
-  .price-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2xl); }
+  .price-grid { gap: var(--space-lg); max-width: 56rem; }
+  .price { padding: var(--space-lg); }
+  .price h3 { font-size: var(--text-title); }
+  .price-facts { font-size: var(--text-md); }
 
   .chat { padding: var(--space-lg) var(--space-lg) var(--space-xl); }
 

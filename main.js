@@ -336,6 +336,15 @@ function setupOpening() {
         scrub: 1,
         anticipatePin: 1,
         invalidateOnRefresh: true,
+        // Сцена не застревает на полпути: когда прокрутка остановилась, она доводится до конца
+        // в ту сторону, куда листали — вперёд к синей странице или назад к первому экрану.
+        snap: {
+          snapTo: [0, 1],
+          directional: true,
+          delay: 0.12,
+          duration: { min: 0.35, max: 0.9 },
+          ease: 'power2.inOut',
+        },
         onRefresh: () => { measure(); draw(); },
         // прокрутка во время появления доводит его до конца; первый вызов при создании не в счёт
         onUpdate: () => { if (window.scrollY > 1 && intro?.isActive()) intro.progress(1); },
