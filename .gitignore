@@ -1,0 +1,12 @@
+.playwright-mcp/
+.env
+.env.*
+*.log
+.DS_Store
+Thumbs.db
+
+# рабочие материалы, не для публикации
+.design-review/
+.hallmark/
+*-brief.md
+intent.md

@@ -1,0 +1,1053 @@
+/* Hallmark · shape: kept order, a Mushaf read aloud to the teacher · genre: editorial · theme: brand · redesign: full (hero and the turn into #about, 30.10.2026; the rest kept) · job: book
+ * paper: oklch(96% 0.018 82) · accent: oklch(78% 0.148 77) · display: Literata · body: Literata · ui: Manrope (the Badr Book pair) · ayah: KFGQPC HAFS Uthmanic Script · hero: Opening, the teacher's desk blurred under a paper veil, the logo as the h1, ayah 54:17 in the Madinah face, Abu Adel's meaning, one line on the lessons · nav: slab, clear ink over the hero, the night binding with the logo once the blue page opens · footer: kept · signature: the logo's blue book opens as you scroll and becomes the blue page of #about
+ * axes: light/roman-serif/warm · posture: full palette (field the logo blue, binding night, signal gold, seal pen, ink on the logo cream) · contrast: pass (on field: head 8.1, text 6.1, notes 5.6, pen 4.9, gold 4.6) · fold: pass 360x740 to 1920x1080 · v2.0.0 */
+/* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V4 · weakest: H, four blocks on one centre line (mark, ayah, meaning, line) as the brief sets them; held by size steps (mark, ayah at 3.4rem, meaning at lead, the line at body in muted) and one gold diamond, nothing else on the screen */
+/* Hallmark · copy: verbatim · the ayah (quran.com text_qpc_hafs 54:17) and the meaning (quran.com translation 79, Abu Adel) are quoted as served; the h1 text and the hero line are the brief's own words */
+/* Hallmark · waive 6b · four centred blocks on the logo's axis · the brief composes the opening as one column under the logo, the book has to sit on the centre line to open into the full screen */
+/* Hallmark · dismissed 66 · the scroll cue is asked for by name in the brief; it runs twice (under five seconds) and rests */
+/* Hallmark · dismissed 23 · .hero-rule is a 88 x 9px hairline diamond, not a fill; .ladder-ar is the Arabic of the ladder set in the logo's gold by request, 4.6:1 on the field */
+/* Hallmark · dropped "Читайте Коран вслух учителю", the lead, the Telegram button and "Цены и форматы" in the hero, the reading figure with the pen · the brief clears the hero to the logo and the ayah; every link stays in the nav, #about and below */
+/* Hallmark · dismissed render · the render tier has no puppeteer-core here; screenshots were taken with Playwright at localhost (.hallmark/after) */
+/* Hallmark · sweep · Floor 0 FAIL · Reflex 0 · finish-review: inline with design-review (no subagent), 3 fixed: the muted line on the veil 3.81 to 4.64:1 (the veil's light centre widened), the hero text under a clear header without the scene (the header darkens as the mark slides under it), the hero overflowing 375x667 and 360x740 (short-screen steps) · CLS 0 · CSP 0 violations · console clean */
+@import url("./tokens.css");
+@import url("./base.css");
+
+/* ---------- Fonts (local, /fonts, all OFL) ---------- */
+/* The Badr Book pair: Literata for heads and text (opsz 7 to 72, wght 200 to 900), Manrope for the controls and small labels (wght 200 to 800) */
+@font-face {
+  font-family: "Literata";
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("fonts/literata-cyrillic-opsz-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Literata";
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("fonts/literata-latin-opsz-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Literata";
+  font-weight: 200 900;
+  font-display: swap;
+  src: url("fonts/literata-latin-ext-opsz-normal.woff2") format("woff2");
+  unicode-range: U+20BD;
+}
+@font-face {
+  font-family: "Manrope";
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("fonts/manrope-cyrillic-wght-normal.woff2") format("woff2");
+  unicode-range: U+0301, U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+@font-face {
+  font-family: "Manrope";
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("fonts/manrope-latin-wght-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Manrope";
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("fonts/manrope-latin-ext-wght-normal.woff2") format("woff2");
+  unicode-range: U+20BD;
+}
+/* Amiri Quran: Quranic Naskh, draws the end-of-ayah sign with its number */
+@font-face {
+  font-family: "Amiri Quran";
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/amiri-quran-arabic-400-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+200C-200E, U+FB50-FDFF, U+FE70-FEFC;
+}
+/* KFGQPC HAFS Uthmanic Script: the King Fahd Complex face of the Madinah Mushaf, the ayah on the first screen only.
+   Free to use and redistribute, never modified: shipped whole, licence in fonts/kfgqpc-uthmanic-hafs-LICENSE.txt */
+@font-face {
+  font-family: "KFGQPC Uthmanic Hafs";
+  font-weight: 400;
+  font-display: swap;
+  src: url("fonts/kfgqpc-uthmanic-hafs-v18.woff2") format("woff2");
+  unicode-range: U+0600-06FF, U+0750-077F, U+08A0-08FF, U+FB50-FDFF, U+FE70-FEFC;
+}
+
+/* ---------- Names the older sections still read (they move to the tokens as each is redone) ---------- */
+:root {
+  --paper: var(--color-paper);
+  --sheet: var(--color-paper);
+  --paper-deep: var(--color-paper-2);
+  --ink: var(--color-ink);
+  --blue: var(--color-blue);
+  --red: var(--color-pen-ink);
+  --grey: var(--color-muted);
+  --grey-text: var(--color-muted);
+  --line: var(--color-rule);
+  --tj-q: var(--color-blue);
+  --tj-s: var(--color-muted);
+  --tj-g: var(--color-gold-ink);
+  --hl-q: oklch(40% 0.09 250 / 0.2);
+  --hl-s: oklch(50% 0.03 252 / 0.22);
+  --hl-g: oklch(78% 0.148 77 / 0.4);
+  --sans: var(--font-body);
+  --arabic: var(--font-arabic);
+  --fs-small: var(--text-sm);
+  --fs-body: var(--text-md);
+  --fs-lead: var(--text-lead);
+  --fs-h3: var(--text-title);
+  --fs-h2: var(--text-section);
+  --section: clamp(4rem, 2.75rem + 4.5vw, 7rem);
+}
+
+/* ---------- Base ---------- */
+@media (prefers-reduced-motion: no-preference) {
+  html { scroll-behavior: smooth; }
+}
+html { scroll-padding-top: calc(var(--header-h) + var(--space-md)); }
+body { line-height: 1.6; font-variant-numeric: lining-nums; }
+
+h2 { margin-bottom: 0.6em; max-width: 20ch; }
+p { margin: 0 0 1em; }
+p:last-child { margin-bottom: 0; }
+
+[lang="ar"] {
+  font-family: var(--font-arabic);
+  font-weight: 400;
+  line-height: 1.9;
+  unicode-bidi: isolate;
+}
+
+.wrap {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.nowrap { white-space: nowrap; }
+
+.skip-link {
+  position: absolute;
+  left: var(--space-sm);
+  top: calc(-1 * var(--space-3xl));
+  z-index: var(--z-toast);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-night);
+  color: var(--color-on-night);
+}
+.skip-link:focus-visible { top: var(--space-sm); outline-color: var(--color-focus-night); }
+
+.lead {
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  max-width: 52ch;
+  margin-bottom: var(--space-xl);
+}
+
+/* ---------- Controls ---------- */
+/* one primary: the logo's gold with a night ink; it reads on the night field and on the cream page */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-xs);
+  min-height: 52px;
+  padding: 0 var(--space-lg);
+  border: 1px solid var(--color-blue);
+  border-radius: var(--radius-control);
+  font: 700 var(--text-sm)/1.2 var(--font-ui);
+  letter-spacing: 0.01em;
+  text-align: center;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out);
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled, .btn[aria-disabled="true"] { opacity: 0.55; cursor: not-allowed; transform: none; }
+.btn[aria-busy="true"] { cursor: progress; }
+
+.btn-primary {
+  background: var(--color-accent);
+  border-color: color-mix(in oklch, var(--color-accent), var(--color-ink) 22%);
+  color: var(--color-accent-ink);
+}
+.btn-primary:hover { background: var(--color-accent-2); }
+.btn-outline { background: transparent; color: var(--color-blue); }
+.btn-outline:hover { background: var(--color-blue); color: var(--color-paper); }
+.btn-outline:active { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-paper); }
+
+.text-link {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.25em;
+  transition: color var(--dur-short) var(--ease-out);
+}
+.text-link:hover { color: var(--color-blue); text-decoration-thickness: 2px; }
+
+.cta-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+}
+
+/* the small labels speak in the interface face, as on Badr Book */
+.skip-link, .note dt, .ladder-ru, .sheet cite, .hadith figcaption,
+.choice legend, .chat figcaption, .footer-base { font-family: var(--font-ui); }
+
+/* ---------- Masthead: the night binding the pages turn under ---------- */
+/* Over the first screen it is clear, ink on the paper veil, and the logo waits in the centre of the hero;
+   once the blue page has opened (main.js lifts .on-hero) the night binding and its logo come back. */
+.site-header {
+  --color-focus: var(--color-focus-night);
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky-nav);
+  color: var(--color-on-night);
+  transition: color var(--dur-short) var(--ease-out);
+  view-transition-name: masthead;
+}
+.site-header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--color-night);
+  transition: opacity var(--dur-long) var(--ease-out);
+}
+.brand { transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), visibility 0s; }
+
+.js.on-hero .site-header:not(.is-menu) { --color-focus: var(--color-gold-ink); color: var(--color-ink); }
+.js.on-hero .site-header:not(.is-menu)::before { opacity: 0; }
+.js.on-hero .site-header:not(.is-menu) .brand {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
+}
+.js.on-hero .site-header:not(.is-menu) .header-cta { color: var(--color-ink); text-decoration-color: var(--color-gold-ink); }
+.js.on-hero .site-header:not(.is-menu) .header-cta:hover { color: var(--color-ink-2); }
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  min-height: var(--header-h);
+}
+
+.brand { display: block; flex-shrink: 0; margin-right: auto; }
+.site-nav { order: 1; }
+.header-cta { order: 2; }
+.nav-toggle { order: 3; }
+.brand img { width: 136px; height: auto; }
+
+.header-cta {
+  padding-block: var(--space-xs);
+  font: 700 var(--text-sm)/1.2 var(--font-ui);
+  color: var(--color-accent);
+  white-space: nowrap;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.3em;
+  transition: color var(--dur-short) var(--ease-out);
+}
+.header-cta:hover { color: var(--color-accent-2); text-decoration-thickness: 2px; }
+
+.nav-toggle {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  cursor: pointer;
+}
+.nav-toggle-bars,
+.nav-toggle-bars::before,
+.nav-toggle-bars::after {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: currentColor;
+  transition: transform var(--dur-short) var(--ease-in-out), opacity var(--dur-short) var(--ease-in-out);
+}
+.nav-toggle-bars { position: relative; }
+.nav-toggle-bars::before,
+.nav-toggle-bars::after { content: ""; position: absolute; left: 0; }
+.nav-toggle-bars::before { transform: translateY(-7px); }
+.nav-toggle-bars::after { transform: translateY(7px); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars { background: transparent; }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::before { transform: rotate(45deg); }
+.nav-toggle[aria-expanded="true"] .nav-toggle-bars::after { transform: rotate(-45deg); }
+
+/* under 1080px the sections open as a sheet over the page */
+.site-nav {
+  display: none;
+  position: fixed;
+  inset: var(--header-h) 0 0;
+  overflow-y: auto;
+  padding: var(--space-lg) var(--gutter) var(--space-2xl);
+  background: var(--color-night);
+}
+.site-nav.is-open { display: block; }
+.site-nav ul { list-style: none; margin: 0; padding: 0; }
+.site-nav a {
+  display: block;
+  padding-block: var(--space-md);
+  border-bottom: 1px solid var(--color-night-2);
+  font: 500 var(--text-2xl)/1.15 var(--font-display);
+  color: var(--color-on-night);
+  text-decoration: none;
+}
+.site-nav a[aria-current="location"] { color: var(--color-accent); }
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-nav.is-open li { animation: sheet-in var(--dur-long) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 40ms); }
+  .site-nav li:nth-child(2) { --i: 1; }
+  .site-nav li:nth-child(3) { --i: 2; }
+  .site-nav li:nth-child(4) { --i: 3; }
+  .site-nav li:nth-child(5) { --i: 4; }
+}
+@keyframes sheet-in { from { opacity: 0; transform: translateY(8px); } }
+
+/* ---------- Opening: the teacher's desk under a paper veil, the logo and the ayah ---------- */
+/* hero and #about share one wrapper: main.js pins it, lays the blue page over the hero
+   cut to the logo's book, and opens the book to the edges of the screen. */
+.opening {
+  position: relative;
+  isolation: isolate;
+  margin-top: calc(-1 * var(--header-h));
+}
+
+/* no z-index here: the photo sits under #about, the logo and the text over it */
+.hero {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 100svh;
+  padding: calc(var(--header-h) + var(--space-md)) var(--gutter) calc(var(--space-xl) + var(--space-2xl) - var(--space-lg));
+  overflow: clip;
+  color: var(--color-ink);
+  text-align: center;
+}
+
+/* the photo is blurred in the file (desk-blur-*.webp), so scrolling never runs a filter */
+.hero-photo,
+.hero-veil {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 44% 30%;
+}
+/* the paper veil: 0.74 at the edges where the photo shows, 0.92 over the whole text column,
+   so the muted line under the meaning keeps 4.5:1 above the darkest part of the desk */
+.hero-veil {
+  --veil-shape: ellipse 64% 72% at 50% 52%;
+  opacity: 0.92;
+  background: radial-gradient(var(--veil-shape),
+    var(--color-paper) 64%,
+    color-mix(in oklch, var(--color-paper) 80%, transparent) 100%);
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  justify-items: center;
+  width: 100%;
+  max-width: 40rem;
+}
+
+.hero-mark { max-width: none; margin: 0; }
+.hero-mark .logo {
+  width: clamp(180px, min(24vw, 24svh), 300px);
+  height: auto;
+  overflow: visible;
+}
+
+/* the logo, layer by layer, in the brand's own colours */
+#logo-rays path { fill: none; stroke: var(--color-accent); stroke-width: 4.2; stroke-linecap: round; }
+#logo-sun { fill: var(--color-accent); }
+#logo-book path,
+.word-name { fill: var(--color-field); }
+.word-academy { fill: var(--color-accent); }
+#logo-pages path { fill: none; stroke: var(--color-paper); stroke-width: 2.6; stroke-linecap: round; }
+/* the cream gap between the pages and the cover, drawn so the blue page under it can take the book's place */
+#logo-pages .page-seam { stroke-width: 3.8; stroke-linecap: butt; }
+
+/* the gold diamond between the mark and the ayah */
+.hero-rule {
+  position: relative;
+  display: block;
+  width: 5.5rem;
+  height: 9px;
+  margin: var(--space-md) 0 var(--space-2xs);
+  background:
+    linear-gradient(var(--color-accent), var(--color-accent)) 0 50% / 2.25rem 1px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) 100% 50% / 2.25rem 1px no-repeat;
+}
+.hero-rule::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border: 1px solid var(--color-accent);
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+
+/* the ayah as printed in the Madinah Mushaf, in two lines broken at its own pause */
+.hero-ayah[lang] {
+  margin: 0;
+  font-family: var(--font-quran);
+  font-size: clamp(1.9rem, 3.4vw + 0.6rem, 3.4rem);
+  line-height: 1.9;
+  color: var(--color-ink);
+  overflow-wrap: normal;
+}
+.hero-ayah p { max-width: none; }
+.ayah-line { display: block; }
+
+.hero-meaning {
+  max-width: 40rem;
+  margin-top: var(--space-xs);
+  font-size: var(--text-lead);
+  line-height: 1.5;
+  color: var(--color-ink-2);
+  text-wrap: balance;
+}
+.hero-about {
+  max-width: 32rem;
+  margin-top: var(--space-md);
+  font-size: var(--text-md);
+  line-height: 1.5;
+  color: var(--color-muted);
+  text-wrap: balance;
+}
+
+/* a gold thread with a bead running down it: there is more below */
+.scroll-cue {
+  --cue: var(--space-xl);
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: var(--space-lg);
+  width: 1px;
+  height: var(--cue);
+  background: var(--color-accent);
+}
+.scroll-cue::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 0;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--color-gold-ink);
+}
+/* two runs, under five seconds, then the bead rests at the top */
+@media (prefers-reduced-motion: no-preference) {
+  .scroll-cue::after { animation: cue-run 2.2s var(--ease-in-out) 1.4s 2; }
+}
+@keyframes cue-run {
+  0% { transform: translateY(0); opacity: 0; }
+  20%, 80% { opacity: 1; }
+  100% { transform: translateY(calc(var(--cue) - 5px)); opacity: 0; }
+}
+
+/* phones: the meaning runs to six lines, so the text steps down a size and the gaps close up */
+@media (max-width: 47.99rem) {
+  .hero { padding-top: calc(var(--header-h) + var(--space-xs)); padding-bottom: calc(var(--space-xl) * 2); }
+  /* the column fills the width on a phone: the light centre is wider than it is tall */
+  .hero-veil { --veil-shape: ellipse 115% 78% at 50% 54%; }
+  .hero-ayah[lang] { line-height: 1.75; }
+  .hero-meaning { font-size: var(--text-md); line-height: 1.45; }
+  .hero-about { font-size: 1rem; }
+}
+/* short screens: the mark and the ayah step down so the screen still holds everything */
+@media (max-height: 48rem) {
+  .hero { padding-bottom: var(--space-2xl); }
+  .hero-mark .logo { width: clamp(132px, min(24vw, 21svh), 240px); }
+  .hero-rule { margin-block: var(--space-xs) 0; }
+  .hero-ayah[lang] { font-size: clamp(1.6rem, 2.6vw + 0.6rem, 2.8rem); line-height: 1.75; }
+  .hero-meaning { font-size: var(--text-md); line-height: 1.45; }
+  .hero-about { margin-top: var(--space-sm); }
+  .scroll-cue { --cue: var(--space-lg); bottom: var(--space-md); }
+}
+
+/* with script: the first screen waits for main.js to bring it in; if main.js never runs, it shows itself */
+.intro #logo-rays,
+.intro #logo-sun,
+.intro #logo-book path,
+.intro #logo-pages,
+.intro #logo-word,
+.intro .hero [data-intro] { opacity: 0; animation: intro-wake 1ms 3s forwards; }
+@keyframes intro-wake { to { opacity: 1; } }
+
+/* the scene (main.js adds .is-scene): #about lies over the hero, cut to the book by clip-path */
+.is-scene .hero { height: 100svh; min-height: 0; }
+.is-scene .doubts { z-index: 1; min-height: 100svh; margin-top: -100svh; }
+.is-scene .hero-inner,
+.is-scene .scroll-cue { pointer-events: none; }
+/* the page's own content waits inside the book and rises in at the end of the scene */
+.is-scene .doubts :is(h2, .doubts-text > p, .notes-title, .notes, .ladder, .enroll-line) { opacity: 0; transform: translateY(32px); }
+/* only while the scene runs */
+.is-playing .doubts { will-change: clip-path; }
+.is-playing .hero-photo,
+.is-playing .hero-veil,
+.is-playing .hero-inner > *,
+.is-playing .doubts .wrap > *,
+.is-playing .doubts-text > * { will-change: transform, opacity; }
+
+/* ---------- Turning the page (View Transitions, main.js) ----------
+   Arabic books bind on the right: the page lifts from its left edge and turns over the right one.
+   The masthead is the binding and holds still. */
+::view-transition-old(root),
+::view-transition-new(root) { mix-blend-mode: normal; }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition { background: var(--color-shade); }
+  ::view-transition-old(root),
+  ::view-transition-new(root) { animation: none; }
+  html[data-turn="forward"]::view-transition-old(root) {
+    z-index: 2;
+    transform-origin: 100% 50%;
+    animation: page-lift var(--dur-turn) var(--ease-in-out) both;
+  }
+  html[data-turn="forward"]::view-transition-new(root) { animation: page-rise var(--dur-turn) var(--ease-out) both; }
+  html[data-turn="back"]::view-transition-new(root) {
+    z-index: 2;
+    transform-origin: 100% 50%;
+    animation: page-lift var(--dur-turn) var(--ease-in-out) reverse both;
+  }
+  html[data-turn="back"]::view-transition-old(root) { animation: page-rise var(--dur-turn) var(--ease-in) reverse both; }
+}
+@keyframes page-lift {
+  0% { transform: perspective(240vw) rotateY(0deg); opacity: 1; }
+  75% { opacity: 1; }
+  100% { transform: perspective(240vw) rotateY(96deg); opacity: 0; }
+}
+@keyframes page-rise {
+  from { opacity: 0.5; transform: scale(0.985); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ---------- Doubts: the blue page the book opens into, notes in the margin ---------- */
+/* the ground is the logo's own blue, the same fill as the book, so the opening leaves no seam.
+   Contrast on --color-field: head and answers 8.1, text 6.1, notes 5.6, gold 4.6 */
+.doubts {
+  --color-focus: var(--color-focus-night);
+  --rule-on-field: color-mix(in oklch, var(--color-on-field-2) 30%, var(--color-field));
+  position: relative;
+  padding-block: var(--section);
+  background: var(--color-field);
+  color: var(--color-on-field-2);
+}
+/* the blue page ends on the Mushaf's double gold rule */
+.doubts::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 6px;
+  background:
+    linear-gradient(var(--color-accent), var(--color-accent)) 0 0 / 100% 1px no-repeat,
+    linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 100% 2px no-repeat;
+}
+.doubts h2 { color: var(--color-on-night); }
+.doubts-grid { display: grid; gap: var(--space-2xl); }
+.doubts-text > p { font-size: var(--fs-lead); line-height: 1.5; max-width: 40ch; }
+
+.notes-title {
+  margin: var(--space-xl) 0 0;
+  font-size: var(--fs-lead);
+  color: var(--color-on-night);
+}
+.notes {
+  margin: 0;
+  padding-left: var(--space-md);
+  border-left: 1px solid var(--rule-on-field);
+  display: grid;
+  gap: var(--space-md);
+}
+.note { display: grid; gap: var(--space-3xs); }
+.note dt {
+  font-size: var(--fs-small);
+  color: var(--color-on-night-2);
+}
+.note dd {
+  margin: 0;
+  font-weight: 500;
+  color: var(--color-on-night);
+}
+
+.ladder {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  align-self: start;
+}
+.ladder li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  padding: var(--space-2xs) 0;
+  border-bottom: 1px solid var(--rule-on-field);
+}
+.ladder-ar {
+  order: 2;
+  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
+  line-height: 1.7;
+  color: var(--color-accent);
+}
+.ladder-ru {
+  font-size: var(--fs-small);
+  color: var(--color-on-field-2);
+}
+
+.enroll-line {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-sm) var(--space-lg);
+  margin-top: var(--space-2xl);
+}
+/* the outline button, turned for the blue ground */
+.doubts .btn-outline { border-color: var(--color-on-field-2); color: var(--color-on-night); }
+.doubts .btn-outline:hover { background: var(--color-on-night); border-color: var(--color-on-night); color: var(--color-field); }
+.doubts .btn-outline:active { background: var(--color-on-field-2); border-color: var(--color-on-field-2); color: var(--color-field); }
+
+/* ---------- Method: one ayah, three rules ---------- */
+.method { padding-block: var(--section); }
+
+.sheet {
+  position: relative;
+  margin: 0 0 var(--space-xl);
+  padding: var(--space-xl) var(--space-lg);
+  background: var(--color-paper-2);
+  border-radius: var(--radius-card);
+}
+
+.ayah {
+  margin: 0 0 var(--space-lg);
+  font-size: clamp(2.125rem, 1rem + 3.6vw, 4rem);
+  line-height: 2;
+  text-align: center;
+}
+.tj-q { color: var(--tj-q); }
+.tj-s { color: var(--tj-s); }
+.tj-g { color: var(--tj-g); }
+
+/* the teacher's red pen, placed over the corrected letter by main.js */
+.pen {
+  display: none;
+  position: absolute;
+  left: 0; top: 0;
+  width: 0; height: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.pen.is-placed { display: block; }
+.pen path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 2.25px;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+.pen.is-waiting path { stroke-dashoffset: 1; }
+.pen.is-drawing path { transition: stroke-dashoffset .9s cubic-bezier(.6, .05, .3, 1); }
+
+.sheet figcaption { text-align: center; }
+.sheet figcaption p {
+  margin: 0 auto var(--space-2xs);
+  max-width: 40ch;
+  font-size: var(--fs-lead);
+  line-height: 1.45;
+}
+.sheet cite { font-style: normal; font-size: var(--fs-small); color: var(--grey-text); }
+
+.rules { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-lg); }
+.rule h3 { font-size: var(--fs-lead); margin-bottom: var(--space-xs); }
+.rule p { max-width: 36ch; }
+/* a highlighter stroke in the letter's own colour, as in a notebook */
+.marker { padding: 0 .15em; box-shadow: inset 0 -.42em 0 var(--hl); }
+.rule-q { --hl: var(--hl-q); }
+.rule-s { --hl: var(--hl-s); }
+.rule-g { --hl: var(--hl-g); }
+
+/* ---------- Teacher ---------- */
+.teacher {
+  padding-block: var(--section);
+  border-top: 1px solid var(--line);
+}
+.teacher-grid { display: grid; gap: var(--space-xl); }
+
+.teacher-photo { margin: 0; max-width: 480px; }
+.teacher-photo img { width: 100%; height: auto; border-radius: var(--radius-card); }
+
+.teacher-body h2 { margin-bottom: .2em; }
+.teacher-role { color: var(--grey-text); margin-bottom: var(--space-lg); }
+.teacher-body > p:not(.teacher-role) { font-size: var(--fs-lead); line-height: 1.5; max-width: 44ch; }
+
+.hadith { margin: var(--space-xl) 0 0; }
+.hadith blockquote { margin: 0; }
+.hadith-ar {
+  margin: 0 0 var(--space-xs);
+  max-width: none;
+  font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
+  line-height: 1.7;
+  text-align: left;
+  /* the logo's gold, as the ladder letters on the same blue ground */
+  color: var(--color-accent);
+}
+.hadith blockquote p:not(.hadith-ar) { font-size: var(--fs-lead); line-height: 1.45; max-width: 36ch; }
+.hadith figcaption { margin-top: var(--space-xs); font-size: var(--fs-small); color: var(--grey-text); }
+
+/* ---------- Lessons ---------- */
+.lessons { padding-block: var(--section); }
+
+.lesson-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 1px solid var(--line);
+}
+.lesson {
+  display: grid;
+  gap: var(--space-xs);
+  padding: var(--space-lg) 0 var(--space-xl);
+  border-bottom: 1px solid var(--line);
+}
+.lesson-ar {
+  font-size: clamp(3rem, 2.2rem + 2.6vw, 4.25rem);
+  line-height: 1.4;
+  text-align: left;
+  white-space: nowrap;
+}
+.lesson h3 { margin-bottom: var(--space-xs); }
+.lesson p { max-width: 52ch; }
+.lesson .text-link { justify-self: start; }
+
+/* ---------- Prices ---------- */
+.prices {
+  padding-block: var(--section);
+  border-top: 1px solid var(--line);
+}
+
+.price-grid { display: grid; gap: var(--space-2xl); }
+.price { display: flex; flex-direction: column; }
+.price-sum { margin: var(--space-xs) 0 var(--space-lg); color: var(--grey-text); }
+.price-num {
+  display: block;
+  font-size: clamp(3rem, 2rem + 4vw, 4.75rem);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.03em;
+  font-variant-numeric: tabular-nums lining-nums;
+  color: var(--ink);
+}
+.price-facts { list-style: none; margin: 0 0 var(--space-xl); padding: 0; border-top: 1px solid var(--line); }
+.price-facts li { padding: var(--space-sm) 0; border-bottom: 1px solid var(--line); }
+.price .btn { align-self: flex-start; margin-top: auto; }
+
+/* ---------- Enroll ---------- */
+.enroll {
+  padding-block: var(--section);
+  border-top: 1px solid var(--line);
+}
+/* the small spaced line over the heading, as on Badr Book */
+.kicker {
+  margin: 0 0 var(--space-sm);
+  font: 600 var(--text-xs)/1.4 var(--font-ui);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey-text);
+}
+.kicker strong { font-weight: 800; color: var(--ink); }
+
+.steps {
+  list-style: none;
+  counter-reset: step;
+  margin: var(--space-xl) 0 0;
+  padding: 0;
+  max-width: 1040px;
+}
+.steps > li {
+  counter-increment: step;
+  position: relative;
+  padding: 0 0 var(--space-xl) var(--space-2xl);
+}
+.steps > li::before {
+  content: counter(step);
+  position: absolute;
+  left: 0; top: -.35rem;
+  font: 500 2.25rem/1 var(--font-display);
+  font-variant-numeric: tabular-nums;
+  color: var(--grey);
+}
+.steps h3 { margin-bottom: var(--space-xs); }
+.steps p { color: var(--grey-text); }
+.steps .cta-row { margin-top: var(--space-lg); }
+/* the one action of the page: larger, with the Telegram mark */
+.steps .btn-primary { min-height: 60px; padding-inline: var(--space-xl); font-size: var(--text-md); }
+.btn-icon { flex: none; }
+@media (max-width: 40rem) {
+  .steps .cta-row .btn { width: 100%; }
+}
+
+/* each option is a whole tappable chip, the chosen one filled with the blue */
+.choice { margin: var(--space-lg) 0 0; padding: 0; border: 0; min-width: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); }
+.choice legend { margin-bottom: var(--space-xs); padding: 0; font-size: var(--fs-small); color: var(--grey-text); }
+.choice label {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  min-height: 48px;
+  padding: 0 var(--space-md) 0 var(--space-sm);
+  border: 1px solid var(--color-paper-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-paper);
+  cursor: pointer;
+  transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
+}
+.choice label:hover { border-color: var(--blue); }
+.choice input {
+  appearance: none;
+  flex: none;
+  width: 18px; height: 18px;
+  margin: 0;
+  border: 2px solid var(--grey);
+  border-radius: 50%;
+  background: var(--color-paper);
+  cursor: pointer;
+}
+.choice input:checked { border-color: var(--color-paper); box-shadow: inset 0 0 0 3px var(--blue); background: var(--color-paper); }
+.choice label:has(input:checked) { font-weight: 700; background: var(--blue); border-color: var(--blue); color: var(--color-paper); }
+.choice label:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
+.choice input:focus-visible { outline: none; }
+.choice input:disabled { opacity: 0.55; cursor: not-allowed; }
+@media (max-width: 40rem) {
+  .choice label { flex: 1 1 100%; }
+}
+
+.chat {
+  margin: var(--space-lg) 0 0;
+  padding: var(--space-md) var(--space-md) var(--space-lg);
+  border-radius: var(--radius-card);
+  background: var(--paper-deep);
+}
+.chat figcaption {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: var(--space-2xs) var(--space-md);
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-sm);
+  border-bottom: 1px solid var(--color-paper-3);
+  font-size: var(--fs-small);
+}
+.chat-to { font-weight: 700; }
+.chat-hint { color: var(--grey-text); }
+.bubble {
+  margin-left: auto;
+  max-width: 360px;
+  padding: var(--space-sm) var(--space-md);
+  border-radius: 14px 14px 4px 14px;
+  background: var(--color-paper);
+}
+.bubble p { margin: 0; color: var(--ink); }
+.bubble [lang="ar"] { font-size: 1.45rem; line-height: 1.6; }
+
+/* ---------- FAQ ---------- */
+.faq {
+  padding-block: var(--section);
+  border-top: 1px solid var(--line);
+}
+.faq details { border-top: 1px solid var(--line); }
+.faq details:last-of-type { border-bottom: 1px solid var(--line); }
+.faq summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--space-md);
+  padding: var(--space-md) 0;
+  font-size: var(--fs-lead);
+  font-weight: 700;
+  line-height: 1.35;
+  cursor: pointer;
+  list-style: none;
+}
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after {
+  content: "+";
+  flex: none;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1;
+  transition: transform var(--dur-short) var(--ease-in-out);
+}
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding-bottom: var(--space-lg); }
+
+/* ---------- Blue pages: teacher, prices, FAQ (the same field as .doubts) ---------- */
+.teacher, .prices, .faq {
+  --color-focus: var(--color-focus-night);
+  --line: color-mix(in oklch, var(--color-on-field-2) 30%, var(--color-field));
+  --grey-text: var(--color-on-field-2);
+  border-top: 0;
+  background: var(--color-field);
+  color: var(--color-on-field-2);
+}
+.teacher h2, .teacher h3, .prices h2, .prices h3, .faq h2, .faq summary,
+.price-num, .teacher-body > p:not(.teacher-role), .hadith blockquote p:not(.hadith-ar) { color: var(--color-on-night); }
+.teacher .text-link, .prices .text-link, .faq .text-link { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
+.teacher .text-link:hover { color: var(--color-accent-2); }
+.prices .btn-outline { border-color: var(--color-on-field-2); color: var(--color-on-night); }
+.prices .btn-outline:hover { background: var(--color-on-night); border-color: var(--color-on-night); color: var(--color-field); }
+.prices .btn-outline:active { background: var(--color-on-field-2); border-color: var(--color-on-field-2); color: var(--color-field); }
+
+/* ---------- Footer: the night binding closes the book ---------- */
+.site-footer {
+  --color-focus: var(--color-focus-night);
+  --line: color-mix(in oklch, var(--color-on-night-2) 22%, var(--color-night));
+  --grey-text: var(--color-on-night-2);
+  padding-top: calc(var(--section) * .7);
+  background: var(--color-night);
+  color: var(--color-on-night);
+}
+.site-footer h2 { font-size: var(--fs-h3); margin-bottom: var(--space-md); max-width: none; color: var(--color-on-night); }
+.site-footer .contact-name { text-decoration-color: var(--color-accent); }
+.site-footer .contact-list a:hover .contact-name { color: var(--color-accent-2); }
+.footer-grid { display: grid; gap: var(--space-xl); }
+
+.contact-list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-2xs); }
+.contact-list a {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-3xs) var(--space-sm);
+  padding: var(--space-xs) 0;
+  text-decoration: none;
+}
+.contact-name {
+  font-weight: 700;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 4px;
+}
+.contact-list a:hover .contact-name { color: var(--blue); text-decoration-thickness: 2px; }
+.contact-handle { color: var(--grey-text); overflow-wrap: anywhere; }
+
+.footer-wish { color: var(--grey-text); max-width: 34ch; }
+
+.footer-base {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  margin-top: var(--space-2xl);
+  padding-block: var(--space-lg);
+  border-top: 1px solid var(--line);
+  font-size: var(--fs-small);
+  color: var(--grey-text);
+}
+/* the logo keeps its own cream ground */
+.logo-plate {
+  display: block;
+  padding: var(--space-2xs) var(--space-xs);
+  border-radius: var(--radius-control);
+  background: var(--color-paper);
+}
+.logo-plate img { width: 120px; height: auto; }
+
+/* ---------- Tablet ---------- */
+@media (min-width: 720px) {
+  .notes { padding-left: var(--space-lg); }
+  .note { grid-template-columns: 12.5rem 1fr; gap: var(--space-lg); align-items: baseline; }
+
+  .rules { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl); }
+
+  .teacher-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--space-2xl); align-items: start; }
+
+  .lesson { grid-template-columns: 13.5rem minmax(0, 1fr) auto; gap: var(--space-xl); align-items: center; }
+
+  .price-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: var(--space-2xl); }
+
+  .chat { padding: var(--space-lg) var(--space-lg) var(--space-xl); }
+
+  .footer-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: end; }
+  .footer-wish { justify-self: end; }
+}
+
+/* ---------- Desktop ---------- */
+@media (min-width: 60rem) {
+  .doubts-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: var(--space-3xl); }
+
+  .step-send {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    grid-template-areas: "title chat" "text chat" "cta chat";
+    grid-template-rows: auto auto 1fr;
+    column-gap: var(--space-2xl);
+  }
+  .step-send h3 { grid-area: title; }
+  .step-send > p { grid-area: text; }
+  .step-send .cta-row { grid-area: cta; align-self: start; }
+  .step-send .chat { grid-area: chat; margin-top: 0; }
+
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); gap: var(--space-2xl); }
+}
+
+@media (min-width: 1080px) {
+  .nav-toggle { display: none; }
+  .site-nav {
+    display: block;
+    position: static;
+    overflow: visible;
+    padding: 0;
+    margin-right: var(--space-lg);
+    background: none;
+  }
+  .site-nav ul { display: flex; gap: var(--space-lg); }
+  .site-nav a {
+    padding-block: var(--space-xs);
+    border: 0;
+    font: 600 var(--text-sm)/1.2 var(--font-ui);
+    color: var(--color-on-night-2);
+    text-decoration: underline;
+    text-decoration-color: transparent;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.45em;
+    transition: color var(--dur-short) var(--ease-out), text-decoration-color var(--dur-short) var(--ease-out);
+  }
+  .site-nav a:hover { color: var(--color-on-night); text-decoration-color: var(--color-on-night-2); }
+  .site-nav a[aria-current="location"] { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
+  .site-nav.is-open li { animation: none; }
+  .brand img { width: 150px; }
+
+  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-ink-2); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-ink); text-decoration-color: var(--color-gold-ink); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
