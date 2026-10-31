@@ -1,5 +1,5 @@
 /* Hallmark · shape: kept order, a Mushaf read aloud to the teacher · genre: editorial · theme: brand · redesign: full (hero and the turn into #about, 30.10.2026; the rest kept) · job: book
- * paper: oklch(96% 0.018 82) · accent: oklch(78% 0.148 77) · display: Literata · body: Literata · ui: Manrope (the Badr Book pair) · ayah: KFGQPC HAFS Uthmanic Script · hero: Opening, the teacher's desk blurred under a paper veil, the logo as the h1, ayah 54:17 in the Madinah face, Abu Adel's meaning, one line on the lessons · nav: slab, clear ink over the hero, the night binding with the logo once the blue page opens · footer: kept · signature: the logo's blue book opens as you scroll and becomes the blue page of #about
+ * paper: oklch(96% 0.018 82) · accent: oklch(78% 0.148 77) · display: Literata · body: Literata · ui: Manrope (the Badr Book pair) · ayah: KFGQPC HAFS Uthmanic Script · hero: Opening, the teacher's desk blurred under the Mushaf's night cover (31.10.2026: the paper veil read too white), the logo as the h1, ayah 54:17 in the Madinah face, Abu Adel's meaning, one line on the lessons · nav: slab, clear ink over the hero, the night binding with the logo once the blue page opens · footer: kept · signature: the logo's blue book opens as you scroll and becomes the blue page of #about
  * axes: light/roman-serif/warm · posture: full palette (field the logo blue, binding night, signal gold, seal pen, ink on the logo cream) · contrast: pass (on field: head 8.1, text 6.1, notes 5.6, pen 4.9, gold 4.6) · fold: pass 360x740 to 1920x1080 · v2.0.0 */
 /* Hallmark · pre-emit critique: P5 H4 E4 S5 R4 V4 · weakest: H, four blocks on one centre line (mark, ayah, meaning, line) as the brief sets them; held by size steps (mark, ayah at 3.4rem, meaning at lead, the line at body in muted) and one gold diamond, nothing else on the screen */
 /* Hallmark · copy: verbatim · the ayah (quran.com text_qpc_hafs 54:17) and the meaning (quran.com translation 79, Abu Adel) are quoted as served; the h1 text and the hero line are the brief's own words */
@@ -201,7 +201,7 @@ p:last-child { margin-bottom: 0; }
 .choice legend, .chat figcaption, .footer-base { font-family: var(--font-ui); }
 
 /* ---------- Masthead: the night binding the pages turn under ---------- */
-/* Over the first screen it is clear, ink on the paper veil, and the logo waits in the centre of the hero;
+/* Over the first screen it is clear, cream on the night cover, and the logo waits in the centre of the hero;
    once the blue page has opened (main.js lifts .on-hero) the night binding and its logo come back. */
 .site-header {
   --color-focus: var(--color-focus-night);
@@ -222,7 +222,7 @@ p:last-child { margin-bottom: 0; }
 }
 .brand { transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), visibility 0s; }
 
-.js.on-hero .site-header:not(.is-menu) { --color-focus: var(--color-gold-ink); color: var(--color-ink); }
+.js.on-hero .site-header:not(.is-menu) { color: var(--color-on-night); }
 .js.on-hero .site-header:not(.is-menu)::before { opacity: 0; }
 .js.on-hero .site-header:not(.is-menu) .brand {
   opacity: 0;
@@ -230,8 +230,8 @@ p:last-child { margin-bottom: 0; }
   transform: translateY(-6px);
   transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
 }
-.js.on-hero .site-header:not(.is-menu) .header-cta { color: var(--color-ink); text-decoration-color: var(--color-gold-ink); }
-.js.on-hero .site-header:not(.is-menu) .header-cta:hover { color: var(--color-ink-2); }
+.js.on-hero .site-header:not(.is-menu) .header-cta { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
+.js.on-hero .site-header:not(.is-menu) .header-cta:hover { color: var(--color-accent-2); }
 
 .header-inner {
   display: flex;
@@ -317,7 +317,7 @@ p:last-child { margin-bottom: 0; }
 }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(8px); } }
 
-/* ---------- Opening: the teacher's desk under a paper veil, the logo and the ayah ---------- */
+/* ---------- Opening: the Mushaf's night cover over the teacher's desk, the logo tooled in cream and gold, the ayah ---------- */
 /* hero and #about share one wrapper: main.js pins it, lays the blue page over the hero
    cut to the logo's book, and opens the book to the edges of the screen. */
 .opening {
@@ -334,7 +334,8 @@ p:last-child { margin-bottom: 0; }
   min-height: 100svh;
   padding: calc(var(--header-h) + var(--space-md)) var(--gutter) calc(var(--space-xl) + var(--space-2xl) - var(--space-lg));
   overflow: clip;
-  color: var(--color-ink);
+  background: var(--color-night);
+  color: var(--color-on-night);
   text-align: center;
 }
 
@@ -351,14 +352,18 @@ p:last-child { margin-bottom: 0; }
   object-fit: cover;
   object-position: 44% 30%;
 }
-/* the paper veil: 0.74 at the edges where the photo shows, 0.92 over the whole text column,
-   so the muted line under the meaning keeps 4.5:1 above the darkest part of the desk */
+/* the cover: night laid over the desk, thinner at the edges where the photo shows through,
+   with the sun's warmth on it behind the mark; the text column stays dark enough for cream at 7:1 */
 .hero-veil {
   --veil-shape: ellipse 64% 72% at 50% 52%;
-  opacity: 0.92;
-  background: radial-gradient(var(--veil-shape),
-    var(--color-paper) 64%,
-    color-mix(in oklch, var(--color-paper) 80%, transparent) 100%);
+  opacity: 0.94;
+  background:
+    radial-gradient(ellipse 30rem 22rem at 50% 24%,
+      color-mix(in oklch, var(--color-accent) 20%, transparent),
+      transparent 70%),
+    radial-gradient(var(--veil-shape),
+      color-mix(in oklch, var(--color-night) 95%, transparent) 56%,
+      color-mix(in oklch, var(--color-shade) 76%, transparent) 100%);
 }
 
 .hero-inner {
@@ -377,15 +382,15 @@ p:last-child { margin-bottom: 0; }
   overflow: visible;
 }
 
-/* the logo, layer by layer, in the brand's own colours */
+/* the logo, layer by layer, in the colours of the brand's own mark for a dark ground (logo-on-blue.svg) */
 #logo-rays path { fill: none; stroke: var(--color-accent); stroke-width: 4.2; stroke-linecap: round; }
 #logo-sun { fill: var(--color-accent); }
 #logo-book path,
-.word-name { fill: var(--color-field); }
+.word-name { fill: var(--color-on-night); }
 .word-academy { fill: var(--color-accent); }
-#logo-pages path { fill: none; stroke: var(--color-paper); stroke-width: 2.6; stroke-linecap: round; }
-/* the cream gap between the pages and the cover, drawn so the blue page under it can take the book's place */
-#logo-pages .page-seam { stroke-width: 3.8; stroke-linecap: butt; }
+#logo-pages path { fill: none; stroke: var(--color-field); stroke-width: 2.6; stroke-linecap: round; }
+/* the gap between the pages and the cover, in the cover's own night */
+#logo-pages .page-seam { stroke: var(--color-night); stroke-width: 3.8; stroke-linecap: butt; }
 
 /* the gold diamond between the mark and the ayah */
 .hero-rule {
@@ -415,7 +420,7 @@ p:last-child { margin-bottom: 0; }
   font-family: var(--font-quran);
   font-size: clamp(1.9rem, 3.4vw + 0.6rem, 3.4rem);
   line-height: 1.9;
-  color: var(--color-ink);
+  color: var(--color-on-night);
   overflow-wrap: normal;
 }
 .hero-ayah p { max-width: none; }
@@ -426,7 +431,7 @@ p:last-child { margin-bottom: 0; }
   margin-top: var(--space-xs);
   font-size: var(--text-lead);
   line-height: 1.5;
-  color: var(--color-ink-2);
+  color: var(--color-on-night);
   text-wrap: balance;
 }
 .hero-about {
@@ -434,7 +439,7 @@ p:last-child { margin-bottom: 0; }
   margin-top: var(--space-md);
   font-size: var(--text-md);
   line-height: 1.5;
-  color: var(--color-muted);
+  color: var(--color-on-night-2);
   text-wrap: balance;
 }
 
@@ -457,7 +462,7 @@ p:last-child { margin-bottom: 0; }
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--color-gold-ink);
+  background: var(--color-accent-2);
 }
 /* two runs, under five seconds, then the bead rests at the top */
 @media (prefers-reduced-motion: no-preference) {
@@ -1077,8 +1082,8 @@ p:last-child { margin-bottom: 0; }
   .site-nav.is-open li { animation: none; }
   .brand img { width: 150px; }
 
-  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-ink-2); }
-  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-ink); text-decoration-color: var(--color-gold-ink); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-on-night-2); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
 }
 
 @media (prefers-reduced-motion: reduce) {

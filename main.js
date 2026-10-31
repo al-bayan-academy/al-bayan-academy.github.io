@@ -263,6 +263,7 @@ function setupOpening() {
     // поэтому все вершины идут вместе и контур не ломается.
     const geo = { p: 0 };
     let box = null;
+    let trigger = null;
 
     // Силуэт считается от живого #logo-book, поэтому совпадает с логотипом на любом экране.
     const measure = () => {
@@ -300,6 +301,10 @@ function setupOpening() {
       const pad = 4;
       // ниже края: на телефоне видимая высота бывает больше 100svh
       const bottom = h * 1.12 + pad;
+      // При быстром пролистывании прокрутка уходит за конец закрепления раньше, чем сцена (scrub) догонит:
+      // страница уже едет вверх. Нижний край тогда держится низа экрана, а не страницы, иначе острый
+      // корешок-«V» выезжает на экран и в конце разом сменяется ровным краем.
+      const over = trigger ? Math.max(0, window.scrollY - trigger.end) : 0;
       let edge = Infinity;
       const points = BOOK.map(([bx, by], i) => {
         const ux = bx + (OPENED[i][0] - bx) * open;
@@ -307,7 +312,7 @@ function setupOpening() {
         const px = x + (cx + (ux - cx) * g) * s;
         const py = y + (cy + (uy - cy) * g) * s;
         const tx = left + w / 2 + EDGE[i][0] * (w / 2 + pad);
-        const ty = top - pad + EDGE[i][1] * (bottom + pad);
+        const ty = top - pad + EDGE[i][1] * (bottom + pad) + LOWER[i] * over;
         const fy = py + (ty - py) * t;
         if (!LOWER[i]) edge = Math.min(edge, fy - top);
         return `${(px + (tx - px) * t).toFixed(1)}px ${fy.toFixed(1)}px`;
@@ -351,6 +356,7 @@ function setupOpening() {
         onToggle: (self) => opening.classList.toggle('is-playing', self.isActive),
       },
     });
+    trigger = tl.scrollTrigger;
 
     // 0 → 0.2: текст уходит вверх и тает; лучи втягиваются в солнце, солнце опускается в разворот и гаснет.
     // Эти части только что двигало появление: шаги встают в сцену, когда оно закончилось (или прервано
@@ -367,8 +373,8 @@ function setupOpening() {
     });
 
     tl
-      // В момент старта настоящая книга уступает место синей странице: двойной книги нет.
-      .set(book, { autoAlpha: 0 }, 0.001)
+      // Кремовая книга тает над синей страницей той же формы: книга наливается синим и только потом раскрывается.
+      .to(book, { autoAlpha: 0, duration: at(0.12), ease: 'sine.inOut' }, 0.001)
       // 0.12 → 0.94: книга раскрывается, растёт и растягивается до краёв одним движением;
       // плавность входа и выхода заложена в draw(), поэтому сам твин линейный
       .to(geo, { p: 1, duration: at(0.82) }, at(0.12))
