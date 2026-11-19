@@ -10,8 +10,8 @@
 /* Hallmark · dismissed render · the render tier has no puppeteer-core here; screenshots were taken with Playwright at localhost (.hallmark/after) */
 /* Hallmark · sweep · Floor 0 FAIL · Reflex 0 · finish-review: inline with design-review (no subagent), 3 fixed: the muted line on the veil 3.81 to 4.64:1 (the veil's light centre widened), the hero text under a clear header without the scene (the header darkens as the mark slides under it), the hero overflowing 375x667 and 360x740 (short-screen steps) · CLS 0 · CSP 0 violations · console clean */
 /* 18.11.2026 · rebrand: the new logo (white marble, deep green, gold) is the whole first screen; the palette moves from the old blue to its green and gold; the book-opening scene is retired with the old SVG mark */
-@import url("./tokens.css");
-@import url("./base.css");
+@import url("./tokens.css?v=20261119");
+@import url("./base.css?v=20261119");
 
 /* ---------- Fonts (local, /fonts, all OFL) ---------- */
 /* The Badr Book pair: Literata for heads and text (opsz 7 to 72, wght 200 to 900), Manrope for the controls and small labels (wght 200 to 800) */
@@ -198,19 +198,18 @@ p:last-child { margin-bottom: 0; }
 }
 
 /* the small labels speak in the interface face, as on Badr Book */
-.skip-link, .note dt, .ladder-ru, .sheet cite, .hadith figcaption,
+.skip-link, .sheet cite, .hadith figcaption,
 .choice legend, .chat figcaption, .footer-base { font-family: var(--font-ui); }
 
-/* ---------- Masthead: the deep green binding ---------- */
-/* Over the first screen it is clear, green ink on the marble, and the logo waits in the centre of the hero;
-   once the hero has gone under it (main.js lifts .on-hero) the green binding and its name come back. */
+/* ---------- Masthead: a strip of the logo's marble ---------- */
+/* Over the first screen only the menu shows; the logo and the action are in the hero itself.
+   Once the logo has gone under it (main.js lifts .on-hero) the marble strip comes in with the emblem and the action. */
 .site-header {
-  --color-focus: var(--color-focus-night);
+  --color-focus: var(--color-focus-paper);
   position: sticky;
   top: 0;
   z-index: var(--z-sticky-nav);
-  color: var(--color-on-night);
-  transition: color var(--dur-short) var(--ease-out);
+  color: var(--color-ink);
   view-transition-name: masthead;
 }
 .site-header::before {
@@ -218,52 +217,50 @@ p:last-child { margin-bottom: 0; }
   position: absolute;
   inset: 0;
   z-index: -1;
-  background: var(--color-night);
+  background: var(--color-marble);
+  box-shadow: 0 8px 24px -14px oklch(22% 0.035 168 / 0.45);
   transition: opacity var(--dur-long) var(--ease-out);
 }
-.brand { transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), visibility 0s; }
+.brand, .header-cta { transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), visibility 0s; }
 
-.js.on-hero .site-header:not(.is-menu) { --color-focus: var(--color-focus-paper); color: var(--color-ink); }
 .js.on-hero .site-header:not(.is-menu)::before { opacity: 0; }
-.js.on-hero .site-header:not(.is-menu) .brand {
+.js.on-hero .site-header:not(.is-menu) .brand,
+.js.on-hero .site-header:not(.is-menu) .header-cta {
   opacity: 0;
   visibility: hidden;
   transform: translateY(-6px);
   transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
 }
-/* on the marble the action is a green button, on the green masthead a gold one */
-.js.on-hero .site-header:not(.is-menu) .header-cta { background: var(--color-green); border-color: var(--color-green); color: var(--color-paper); }
-.js.on-hero .site-header:not(.is-menu) .header-cta:hover { background: var(--color-ink); border-color: var(--color-ink); }
 
 .header-inner {
   display: flex;
   align-items: center;
-  gap: var(--space-md);
+  gap: var(--space-sm);
   min-height: var(--header-h);
 }
 
 .brand {
   display: flex;
   align-items: center;
-  gap: 0.6rem;
+  gap: 0.55rem;
   flex-shrink: 0;
   margin-right: auto;
-  color: var(--color-on-night);
+  color: var(--color-ink);
   text-decoration: none;
 }
 .site-nav { order: 1; }
 .header-cta { order: 2; }
 .nav-toggle { order: 3; }
-/* the logo's two names: البيان in gold, the Latin line in wide roman capitals */
-.brand-ar[lang] { font-size: 1.875rem; line-height: 1; color: var(--color-accent); }
-.brand-en { font: 600 1.0625rem/1 var(--font-mark); letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; }
+/* the emblem cut from the logo, no square around it; the Latin line in the logo's wide roman capitals */
+.brand-mark { width: auto; height: 40px; }
+.brand-en { font: 600 1.0625rem/1 var(--font-mark); letter-spacing: 0.14em; text-transform: uppercase; white-space: nowrap; }
 /* phones: the name keeps its first two words beside the action and the menu */
 @media (max-width: 40rem) { .brand-academy { display: none; } }
 
 /* a real button, smaller than the page's own */
 .btn.header-cta { min-height: 40px; padding: 0 var(--space-md); gap: 6px; }
-@media (max-width: 22.5rem) { .btn.header-cta .btn-icon { display: none; } }
-/* the narrowest phones keep البيان alone beside the button and the menu */
+@media (max-width: 23.5rem) { .btn.header-cta .btn-icon { display: none; } .brand-en { letter-spacing: 0.1em; } }
+/* the narrowest phones keep the emblem alone beside the button and the menu */
 @media (max-width: 21rem) { .site-header .brand-en { display: none; } }
 
 .nav-toggle {
@@ -301,20 +298,22 @@ p:last-child { margin-bottom: 0; }
   position: fixed;
   inset: var(--header-h) 0 0;
   overflow-y: auto;
-  padding: var(--space-lg) var(--gutter) var(--space-2xl);
-  background: var(--color-night);
+  padding: var(--space-md) var(--gutter) var(--space-2xl);
+  background: var(--color-marble);
 }
 .site-nav.is-open { display: block; }
-.site-nav ul { list-style: none; margin: 0; padding: 0; }
+.site-nav ul { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-xs); }
+/* each section is a tappable row on a slightly deeper marble, no rules between them */
 .site-nav a {
   display: block;
-  padding-block: var(--space-md);
-  border-bottom: 1px solid var(--color-night-2);
-  font: 500 var(--text-2xl)/1.15 var(--font-display);
-  color: var(--color-on-night);
+  padding: var(--space-md) var(--space-md);
+  border-radius: 10px;
+  background: var(--color-paper-2);
+  font: 600 var(--text-xl)/1.15 var(--font-display);
+  color: var(--color-ink);
   text-decoration: none;
 }
-.site-nav a[aria-current="location"] { color: var(--color-accent); }
+.site-nav a[aria-current="location"] { color: var(--color-gold-ink); }
 
 @media (prefers-reduced-motion: no-preference) {
   .site-nav.is-open li { animation: sheet-in var(--dur-long) var(--ease-out) both; animation-delay: calc(var(--i, 0) * 40ms); }
@@ -334,18 +333,30 @@ p:last-child { margin-bottom: 0; }
 }
 
 .hero {
-  /* the logo's side: the screen's width, its height under the masthead, never past the file's own size */
-  --logo: min(calc(100vw - 2 * var(--gutter)), calc(100svh - var(--header-h) - 9rem), 760px);
+  /* the emblem's width: most of a phone's width, held by the screen's height so the text and the button fit under it */
+  --logo: min(80vw, calc((100svh - 17rem) * 0.783), 440px);
   position: relative;
   display: grid;
   place-items: center;
   min-height: 100svh;
-  padding: calc(var(--header-h) + var(--space-xs)) var(--gutter) calc(var(--space-2xl) + var(--space-sm));
+  padding: var(--header-h) var(--gutter) var(--space-xl);
   overflow: clip;
-  /* one flat ground, the very colour of the logo's marble, so the square has no edge */
-  background: var(--color-marble);
+  /* the logo's marble, carried across the whole screen; the emblem lies on it without its square */
+  background: var(--color-marble) url("assets/hero/marble-tall.webp") center / cover no-repeat;
   color: var(--color-ink);
   text-align: center;
+}
+@media (min-aspect-ratio: 1/1) {
+  .hero { background-image: url("assets/hero/marble-wide.webp"); }
+}
+/* the soft light the logo's gold throws on the stone */
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: radial-gradient(ellipse 60% 42% at 50% 40%, oklch(99% 0.01 80 / 0.85), oklch(99% 0.01 80 / 0) 100%);
+  pointer-events: none;
 }
 
 .hero-inner {
@@ -353,80 +364,35 @@ p:last-child { margin-bottom: 0; }
   z-index: 2;
   display: grid;
   justify-items: center;
+  grid-template-columns: minmax(0, 1fr);
   width: 100%;
 }
 
 .hero-mark { max-width: none; margin: 0; }
-/* the square's edges fade into the marble, so the logo lies on the page and not on a card */
-.hero-logo {
-  width: var(--logo);
-  height: auto;
-  aspect-ratio: 1;
-  -webkit-mask-image:
-    linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(transparent, #000 3%, #000 93%, transparent);
-  -webkit-mask-composite: source-in;
-  mask-image:
-    linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent),
-    linear-gradient(transparent, #000 3%, #000 93%, transparent);
-  mask-composite: intersect;
-}
+.hero-logo { width: var(--logo); height: auto; aspect-ratio: 881 / 1125; }
 
-/* one line on the lessons, tucked into the empty marble under the logo's gold rule */
 .hero-about {
-  max-width: 34rem;
-  margin-top: calc(var(--logo) * -0.06);
+  max-width: 32rem;
+  margin-top: var(--space-lg);
   font-size: var(--text-lead);
   line-height: 1.5;
   color: var(--color-ink-2);
   text-wrap: balance;
 }
 
-/* a gold thread with a bead running down it: there is more below */
-.scroll-cue {
-  --cue: var(--space-xl);
-  position: absolute;
-  z-index: 2;
-  left: 50%;
-  bottom: var(--space-lg);
-  width: 1px;
-  height: var(--cue);
-  background: var(--color-gold-ink);
-}
-.scroll-cue::after {
-  content: "";
-  position: absolute;
-  left: -2px;
-  top: 0;
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--color-accent);
-}
-/* two runs, under five seconds, then the bead rests at the top */
-@media (prefers-reduced-motion: no-preference) {
-  .scroll-cue::after { animation: cue-run 2.2s var(--ease-in-out) 1.4s 2; }
-}
-@keyframes cue-run {
-  0% { transform: translateY(0); opacity: 0; }
-  20%, 80% { opacity: 1; }
-  100% { transform: translateY(calc(var(--cue) - 5px)); opacity: 0; }
-}
+/* the green of the calligraphy, the action of the first screen */
+.btn-green { background: var(--color-green); border-color: var(--color-green); color: var(--color-paper); }
+.btn-green:hover { background: var(--color-ink); border-color: var(--color-ink); }
+.hero-cta { margin-top: var(--space-lg); min-height: 56px; padding-inline: var(--space-xl); font-size: var(--text-md); box-shadow: 0 10px 24px -14px oklch(22% 0.035 168 / 0.7); }
 
-/* phones: the logo takes the whole width, its faded edges run off the screen */
 @media (max-width: 47.99rem) {
-  .hero {
-    --logo: min(100vw, calc(100svh - var(--header-h) - 10rem));
-    padding-inline: 0;
-    padding-bottom: calc(var(--space-xl) * 2);
-  }
-  .hero-about { padding-inline: var(--gutter); font-size: var(--text-md); }
+  .hero-about { font-size: var(--text-md); }
+  .hero-cta { width: min(100%, 22rem); padding-inline: var(--space-md); white-space: normal; }
 }
-/* short screens: the thread steps in */
-@media (max-height: 48rem) {
-  .hero { padding-bottom: var(--space-2xl); }
-  .hero-about { font-size: var(--text-md); line-height: 1.45; }
-  .scroll-cue { --cue: var(--space-lg); bottom: var(--space-md); }
+@media (max-height: 44rem) {
+  .hero { --logo: min(80vw, calc((100svh - 15.5rem) * 0.783), 440px); }
+  .hero-about { margin-top: var(--space-md); font-size: 1rem; line-height: 1.45; }
+  .hero-cta { margin-top: var(--space-md); min-height: 52px; }
 }
 
 /* with script: the first screen waits for main.js to bring it in; if main.js never runs, it shows itself */
@@ -474,67 +440,49 @@ p:last-child { margin-bottom: 0; }
   --color-focus: var(--color-focus-night);
   --rule-on-field: color-mix(in oklch, var(--color-on-field-2) 30%, var(--color-field));
   position: relative;
-  padding-block: var(--section);
+  padding-block: var(--section) var(--space-2xl);
   background: var(--color-field);
   color: var(--color-on-field-2);
 }
 .doubts h2 { color: var(--color-on-night); }
-.doubts-grid { display: grid; gap: var(--space-2xl); }
-.doubts-text > p { font-size: var(--fs-lead); line-height: 1.5; max-width: 40ch; }
 
-.notes-title {
-  margin: var(--space-xl) 0 0;
-  font-size: var(--fs-lead);
-  color: var(--color-on-night);
-}
+/* each thought on its own card: the student's words large, with the gold quote mark; the teacher's answer under them */
 .notes {
   margin: 0;
-  padding-left: var(--space-md);
-  border-left: 1px solid var(--rule-on-field);
   display: grid;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
-.note { display: grid; gap: var(--space-2xs); }
+.note {
+  position: relative;
+  display: grid;
+  gap: var(--space-xs);
+  padding: var(--space-lg) var(--space-lg) var(--space-lg) calc(var(--space-lg) + 2.25rem);
+  border-radius: 14px;
+  background: color-mix(in oklch, var(--color-on-night) 7%, var(--color-field));
+}
+.note::before {
+  content: "\201C";
+  position: absolute;
+  left: var(--space-md);
+  top: var(--space-sm);
+  font: 700 3.25rem/1 var(--font-display);
+  color: var(--color-accent);
+}
 .note dt {
-  font-size: var(--fs-small);
-  line-height: 1.45;
-  color: var(--color-on-night-2);
+  font: 600 var(--text-lg)/1.3 var(--font-display);
+  color: var(--color-on-night);
 }
 .note dd {
   margin: 0;
+  font-size: var(--text-md);
   line-height: 1.5;
-  color: var(--color-on-night);
+  color: var(--color-on-field-2);
 }
-/* phones: the thoughts read as a calm list, a size down, with air between them */
 @media (max-width: 47.99rem) {
   .doubts h2 { font-size: var(--text-2xl); }
-  .notes { gap: var(--space-lg); }
+  .note { padding: var(--space-md) var(--space-md) var(--space-md) calc(var(--space-md) + 2rem); }
+  .note::before { left: var(--space-sm); top: var(--space-xs); font-size: 2.75rem; }
   .note dd { font-size: 1.0625rem; }
-}
-
-.ladder {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  align-self: start;
-}
-.ladder li {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-lg);
-  padding: var(--space-2xs) 0;
-  border-bottom: 1px solid var(--rule-on-field);
-}
-.ladder-ar {
-  order: 2;
-  font-size: clamp(2.25rem, 1.6rem + 2.6vw, 3.5rem);
-  line-height: 1.7;
-  color: var(--color-accent);
-}
-.ladder-ru {
-  font-size: var(--fs-small);
-  color: var(--color-on-field-2);
 }
 
 .enroll-line {
@@ -542,7 +490,8 @@ p:last-child { margin-bottom: 0; }
   flex-wrap: wrap;
   align-items: center;
   gap: var(--space-sm) var(--space-lg);
-  margin-top: var(--space-2xl);
+  margin-top: var(--space-lg);
+  color: var(--color-on-field-2);
 }
 /* the outline button, turned for the green ground */
 .doubts .btn-outline { border-color: var(--color-on-field-2); color: var(--color-on-night); }
@@ -622,10 +571,14 @@ p:last-child { margin-bottom: 0; }
 .teacher-photo img { width: 100%; height: auto; border-radius: var(--radius-card); }
 
 .teacher-body h2 { margin-bottom: .2em; }
-.teacher-role { color: var(--grey-text); margin-bottom: var(--space-lg); }
+.teacher-role { color: var(--grey-text); margin-bottom: var(--space-md); }
+.teacher-body > p:not(.teacher-role) { margin-bottom: var(--space-lg); }
+.teacher-contacts { gap: var(--space-sm); }
+@media (max-width: 40rem) { .teacher-contacts .btn { flex: 1 1 100%; } }
 .teacher-body > p:not(.teacher-role) { font-size: var(--fs-lead); line-height: 1.5; max-width: 44ch; }
 
 .hadith { margin: var(--space-xl) 0 0; }
+@media (max-width: 40rem) { .teacher-grid { gap: var(--space-lg); } .hadith { margin-top: var(--space-lg); } }
 .hadith blockquote { margin: 0; }
 .hadith-ar {
   margin: 0 0 var(--space-xs);
@@ -633,7 +586,7 @@ p:last-child { margin-bottom: 0; }
   font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
   line-height: 1.7;
   text-align: left;
-  /* the logo's gold, as the ladder letters on the same green ground */
+  /* the logo's gold on the green ground */
   color: var(--color-accent);
 }
 .hadith blockquote p:not(.hadith-ar) { font-size: var(--fs-lead); line-height: 1.45; max-width: 36ch; }
@@ -910,12 +863,11 @@ p:last-child { margin-bottom: 0; }
   color: var(--grey-text);
 }
 /* the footer closes on the masthead's name, not on a square of marble */
-.footer-brand { margin-right: 0; }
+.footer-brand { margin-right: 0; color: var(--color-on-night); }
 
 /* ---------- Tablet ---------- */
 @media (min-width: 720px) {
-  .notes { padding-left: var(--space-lg); }
-  .note { grid-template-columns: 12.5rem 1fr; gap: var(--space-lg); align-items: baseline; }
+  .notes { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
 
   .rules { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-xl); }
 
@@ -936,8 +888,6 @@ p:last-child { margin-bottom: 0; }
 
 /* ---------- Desktop ---------- */
 @media (min-width: 60rem) {
-  .doubts-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, .85fr); gap: var(--space-3xl); }
-
   .step-send {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
@@ -968,17 +918,17 @@ p:last-child { margin-bottom: 0; }
     padding-block: var(--space-xs);
     border: 0;
     font: 600 var(--text-sm)/1.2 var(--font-ui);
-    color: var(--color-on-night-2);
+    border-radius: 0;
+    background: none;
+    color: var(--color-ink-2);
     transition: color var(--dur-short) var(--ease-out);
   }
   /* no underline: the current section is told by the gold alone */
-  .site-nav a:hover { color: var(--color-on-night); }
-  .site-nav a[aria-current="location"] { color: var(--color-accent); }
+  .site-nav a:hover { color: var(--color-ink); }
+  .site-nav a[aria-current="location"] { color: var(--color-gold-ink); }
   .site-nav.is-open li { animation: none; }
   .brand-en { font-size: 1.1875rem; }
-
-  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-ink-2); }
-  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-ink); }
+  .brand-mark { height: 46px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

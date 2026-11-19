@@ -1,9 +1,8 @@
 'use strict';
 
-// Контакты записи. WhatsApp-кнопки остаются скрытыми, пока номер пустой.
-// Номер в международном формате без «+», например '79991234567'.
+// Контакты записи. Номер WhatsApp в международном формате без «+».
 const TELEGRAM_USER = 'aliabuturabofficial';
-const WHATSAPP_NUMBER = ''; // TODO(заказчик): номер WhatsApp
+const WHATSAPP_NUMBER = '79285259009'; // +7 928 525-90-09
 
 const GREETING = 'السلام عليكم ورحمة الله وبركاته.';
 
@@ -157,7 +156,7 @@ function setupButtonFeedback() {
 }
 
 // ---------- Первый экран: логотип на мраморе ----------
-// GSAP (vendor/gsap). При загрузке логотип проступает из мрамора, за ним строка о занятиях и нить прокрутки.
+// GSAP (vendor/gsap). При загрузке логотип проступает из мрамора, за ним строка о занятиях и кнопка записи.
 // При прокрутке первый экран уходит медленнее страницы, логотип чуть уменьшается и тает.
 // Без GSAP, без JS и при «уменьшить движение» всё видно сразу и просто прокручивается.
 
@@ -188,8 +187,7 @@ function setupOpening() {
   if (motion && window.scrollY < 4) {
     gsap.timeline({ defaults: { ease: tokenEase(CustomEase, '--ease-out') } })
       .fromTo(logo, { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1, duration: 1.3 }, 0)
-      .fromTo(hero.querySelectorAll('.hero-inner [data-intro]'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6 }, 0.7)
-      .fromTo(hero.querySelector('.scroll-cue'), { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.1);
+      .fromTo(hero.querySelectorAll('.hero-inner [data-intro]'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.15 }, 0.7);
   }
   root.classList.remove('intro');
   if (!motion) return;
