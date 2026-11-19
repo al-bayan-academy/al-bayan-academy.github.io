@@ -10,27 +10,31 @@
   --container: 1440px; --gutter: 64px; --gap-columns: 32px; --section-gap-s: 120px; --section-gap: 144px; --section-gap-l: 176px;
   --z-base: 1; --z-raised: 10; --z-dropdown: 100; --z-sticky: 200; --z-sticky-nav: 300; --z-modal: 400; --z-toast: 500; --z-tooltip: 600;
 
-  /* paper: the logo's cream; ink: the logo's blue taken down to a reading ink */
-  --color-paper: oklch(96% 0.018 82); --color-paper-2: oklch(92.5% 0.026 80); --color-paper-3: oklch(88.5% 0.032 80);
-  --color-ink: oklch(25% 0.04 252); --color-ink-2: oklch(38% 0.035 252); --color-muted: oklch(50% 0.03 252);
-  --color-rule: oklch(84% 0.025 80);
-  --color-blue: oklch(40% 0.09 250);
-  /* night: the masthead, the binding the pages turn under */
-  --color-night: oklch(24% 0.055 252); --color-night-2: oklch(31% 0.06 252);
-  --color-on-night: oklch(95% 0.022 85); --color-on-night-2: oklch(83% 0.03 85);
-  /* field: the logo's own blue (#184971), the ground of the first page */
-  --color-field: oklch(39.4% 0.085 247); --color-on-field-2: oklch(86% 0.03 85);
+  /* The 18.11.2026 logo: white marble, the name in deep green, the dome, book and pen in gold */
+  /* paper: the logo's marble; ink: its green taken down to a reading ink */
+  --color-paper: #F3EAE6; --color-paper-2: oklch(92% 0.017 58); --color-paper-3: oklch(88% 0.024 62);
+  --color-marble: #F3EAE6;
+  --color-ink: oklch(22% 0.035 168); --color-ink-2: oklch(34% 0.04 168); --color-muted: oklch(46% 0.03 168);
+  --color-rule: oklch(84% 0.022 62);
+  --color-green: oklch(36% 0.07 166);
+  /* night: the masthead and the footer, the darkest green of the calligraphy */
+  --color-night: oklch(20% 0.04 168); --color-night-2: oklch(28% 0.045 168);
+  --color-on-night: oklch(95.5% 0.014 70); --color-on-night-2: oklch(84% 0.025 75);
+  /* field: the green of the book's binding, the ground of the deep pages */
+  --color-field: oklch(26% 0.05 166); --color-on-field-2: oklch(86% 0.024 75);
   /* signal: the logo's gold; it lights what is being read and the one action */
-  --color-accent: oklch(78% 0.148 77); --color-accent-2: oklch(84% 0.13 82); --color-accent-ink: oklch(24% 0.055 252);
-  --color-gold-ink: oklch(52% 0.11 72);
+  --color-accent: oklch(75% 0.14 78); --color-accent-2: oklch(82% 0.13 86); --color-accent-ink: oklch(20% 0.04 168);
+  --color-gold-ink: oklch(52% 0.11 70);
   /* seal: the teacher's red pen, corrections only */
   --color-pen: oklch(74% 0.15 40); --color-pen-ink: oklch(50% 0.155 31);
-  --color-focus: oklch(50% 0.12 72); --color-focus-night: oklch(82% 0.16 80);
-  --color-shade: oklch(18% 0.04 252);
+  --color-focus: var(--color-focus-paper); --color-focus-paper: oklch(50% 0.12 70); --color-focus-night: oklch(82% 0.14 84);
+  --color-shade: oklch(15% 0.03 168);
 
   /* the Badr Book pair: Literata reads, Manrope works the controls and the small labels */
   --font-display: "Literata", Georgia, "Times New Roman", serif; --font-body: "Literata", Georgia, "Times New Roman", serif;
   --font-ui: "Manrope", "Segoe UI", system-ui, -apple-system, sans-serif;
+  /* the logo's Latin line: wide roman capitals */
+  --font-mark: "Cormorant Garamond", "Literata", Georgia, serif;
   --font-arabic: "Amiri Quran", "Scheherazade New", "Noto Naskh Arabic", serif;
   /* the Madinah Mushaf face for the ayah itself; Amiri Quran stands in while it loads */
   --font-quran: "KFGQPC Uthmanic Hafs", "Amiri Quran", serif;

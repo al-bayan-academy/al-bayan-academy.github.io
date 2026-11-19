@@ -9,6 +9,7 @@
 /* Hallmark · dropped "Читайте Коран вслух учителю", the lead, the Telegram button and "Цены и форматы" in the hero, the reading figure with the pen · the brief clears the hero to the logo and the ayah; every link stays in the nav, #about and below */
 /* Hallmark · dismissed render · the render tier has no puppeteer-core here; screenshots were taken with Playwright at localhost (.hallmark/after) */
 /* Hallmark · sweep · Floor 0 FAIL · Reflex 0 · finish-review: inline with design-review (no subagent), 3 fixed: the muted line on the veil 3.81 to 4.64:1 (the veil's light centre widened), the hero text under a clear header without the scene (the header darkens as the mark slides under it), the hero overflowing 375x667 and 360x740 (short-screen steps) · CLS 0 · CSP 0 violations · console clean */
+/* 18.11.2026 · rebrand: the new logo (white marble, deep green, gold) is the whole first screen; the palette moves from the old blue to its green and gold; the book-opening scene is retired with the old SVG mark */
 @import url("./tokens.css");
 @import url("./base.css");
 
@@ -56,6 +57,14 @@
   src: url("fonts/manrope-latin-ext-wght-normal.woff2") format("woff2");
   unicode-range: U+20BD;
 }
+/* Cormorant Garamond: the wide roman capitals of the logo's Latin line, the masthead name only */
+@font-face {
+  font-family: "Cormorant Garamond";
+  font-weight: 600;
+  font-display: swap;
+  src: url("fonts/cormorant-garamond-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF;
+}
 /* Amiri Quran: Quranic Naskh, draws the end-of-ayah sign with its number */
 @font-face {
   font-family: "Amiri Quran";
@@ -80,17 +89,17 @@
   --sheet: var(--color-paper);
   --paper-deep: var(--color-paper-2);
   --ink: var(--color-ink);
-  --blue: var(--color-blue);
+  --green: var(--color-green);
   --red: var(--color-pen-ink);
   --grey: var(--color-muted);
   --grey-text: var(--color-muted);
   --line: var(--color-rule);
-  --tj-q: var(--color-blue);
+  --tj-q: var(--color-green);
   --tj-s: var(--color-muted);
   --tj-g: var(--color-gold-ink);
-  --hl-q: oklch(40% 0.09 250 / 0.2);
-  --hl-s: oklch(50% 0.03 252 / 0.22);
-  --hl-g: oklch(78% 0.148 77 / 0.4);
+  --hl-q: oklch(36% 0.07 166 / 0.18);
+  --hl-s: oklch(46% 0.03 168 / 0.2);
+  --hl-g: oklch(75% 0.14 78 / 0.4);
   --sans: var(--font-body);
   --arabic: var(--font-arabic);
   --fs-small: var(--text-sm);
@@ -98,7 +107,8 @@
   --fs-lead: var(--text-lead);
   --fs-h3: var(--text-title);
   --fs-h2: var(--text-section);
-  --section: clamp(4rem, 2.75rem + 4.5vw, 7rem);
+  /* tighter than before: less empty air between the blocks */
+  --section: clamp(3.5rem, 2.5rem + 3vw, 5.25rem);
 }
 
 /* ---------- Base ---------- */
@@ -155,7 +165,7 @@ p:last-child { margin-bottom: 0; }
   gap: var(--space-xs);
   min-height: 52px;
   padding: 0 var(--space-lg);
-  border: 1px solid var(--color-blue);
+  border: 1px solid var(--color-green);
   border-radius: var(--radius-control);
   font: 700 var(--text-sm)/1.2 var(--font-ui);
   letter-spacing: 0.01em;
@@ -176,18 +186,9 @@ p:last-child { margin-bottom: 0; }
   color: var(--color-accent-ink);
 }
 .btn-primary:hover { background: var(--color-accent-2); }
-.btn-outline { background: transparent; color: var(--color-blue); }
-.btn-outline:hover { background: var(--color-blue); color: var(--color-paper); }
+.btn-outline { background: transparent; color: var(--color-green); }
+.btn-outline:hover { background: var(--color-green); color: var(--color-paper); }
 .btn-outline:active { background: var(--color-ink); border-color: var(--color-ink); color: var(--color-paper); }
-
-.text-link {
-  font-weight: 700;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.25em;
-  transition: color var(--dur-short) var(--ease-out);
-}
-.text-link:hover { color: var(--color-blue); text-decoration-thickness: 2px; }
 
 .cta-row {
   display: flex;
@@ -200,9 +201,9 @@ p:last-child { margin-bottom: 0; }
 .skip-link, .note dt, .ladder-ru, .sheet cite, .hadith figcaption,
 .choice legend, .chat figcaption, .footer-base { font-family: var(--font-ui); }
 
-/* ---------- Masthead: the night binding the pages turn under ---------- */
-/* Over the first screen it is clear, cream on the night cover, and the logo waits in the centre of the hero;
-   once the blue page has opened (main.js lifts .on-hero) the night binding and its logo come back. */
+/* ---------- Masthead: the deep green binding ---------- */
+/* Over the first screen it is clear, green ink on the marble, and the logo waits in the centre of the hero;
+   once the hero has gone under it (main.js lifts .on-hero) the green binding and its name come back. */
 .site-header {
   --color-focus: var(--color-focus-night);
   position: sticky;
@@ -222,7 +223,7 @@ p:last-child { margin-bottom: 0; }
 }
 .brand { transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), visibility 0s; }
 
-.js.on-hero .site-header:not(.is-menu) { color: var(--color-on-night); }
+.js.on-hero .site-header:not(.is-menu) { --color-focus: var(--color-focus-paper); color: var(--color-ink); }
 .js.on-hero .site-header:not(.is-menu)::before { opacity: 0; }
 .js.on-hero .site-header:not(.is-menu) .brand {
   opacity: 0;
@@ -230,8 +231,9 @@ p:last-child { margin-bottom: 0; }
   transform: translateY(-6px);
   transition: opacity var(--dur-short) var(--ease-out), transform var(--dur-short) var(--ease-out), visibility 0s var(--dur-short);
 }
-.js.on-hero .site-header:not(.is-menu) .header-cta { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
-.js.on-hero .site-header:not(.is-menu) .header-cta:hover { color: var(--color-accent-2); }
+/* on the marble the action is a green button, on the green masthead a gold one */
+.js.on-hero .site-header:not(.is-menu) .header-cta { background: var(--color-green); border-color: var(--color-green); color: var(--color-paper); }
+.js.on-hero .site-header:not(.is-menu) .header-cta:hover { background: var(--color-ink); border-color: var(--color-ink); }
 
 .header-inner {
   display: flex;
@@ -240,23 +242,29 @@ p:last-child { margin-bottom: 0; }
   min-height: var(--header-h);
 }
 
-.brand { display: block; flex-shrink: 0; margin-right: auto; }
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+  margin-right: auto;
+  color: var(--color-on-night);
+  text-decoration: none;
+}
 .site-nav { order: 1; }
 .header-cta { order: 2; }
 .nav-toggle { order: 3; }
-.brand img { width: 136px; height: auto; }
+/* the logo's two names: البيان in gold, the Latin line in wide roman capitals */
+.brand-ar[lang] { font-size: 1.875rem; line-height: 1; color: var(--color-accent); }
+.brand-en { font: 600 1.0625rem/1 var(--font-mark); letter-spacing: 0.16em; text-transform: uppercase; white-space: nowrap; }
+/* phones: the name keeps its first two words beside the action and the menu */
+@media (max-width: 40rem) { .brand-academy { display: none; } }
 
-.header-cta {
-  padding-block: var(--space-xs);
-  font: 700 var(--text-sm)/1.2 var(--font-ui);
-  color: var(--color-accent);
-  white-space: nowrap;
-  text-decoration: underline;
-  text-decoration-thickness: 1px;
-  text-underline-offset: 0.3em;
-  transition: color var(--dur-short) var(--ease-out);
-}
-.header-cta:hover { color: var(--color-accent-2); text-decoration-thickness: 2px; }
+/* a real button, smaller than the page's own */
+.btn.header-cta { min-height: 40px; padding: 0 var(--space-md); gap: 6px; }
+@media (max-width: 22.5rem) { .btn.header-cta .btn-icon { display: none; } }
+/* the narrowest phones keep البيان alone beside the button and the menu */
+@media (max-width: 21rem) { .site-header .brand-en { display: none; } }
 
 .nav-toggle {
   display: grid;
@@ -317,53 +325,27 @@ p:last-child { margin-bottom: 0; }
 }
 @keyframes sheet-in { from { opacity: 0; transform: translateY(8px); } }
 
-/* ---------- Opening: the Mushaf's night cover over the teacher's desk, the logo tooled in cream and gold, the ayah ---------- */
-/* hero and #about share one wrapper: main.js pins it, lays the blue page over the hero
-   cut to the logo's book, and opens the book to the edges of the screen. */
+/* ---------- Opening: the new logo on its own white marble ---------- */
+/* the hero runs up under the clear masthead */
 .opening {
   position: relative;
   isolation: isolate;
   margin-top: calc(-1 * var(--header-h));
 }
 
-/* no z-index here: the photo sits under #about, the logo and the text over it */
 .hero {
+  /* the logo's side: the screen's width, its height under the masthead, never past the file's own size */
+  --logo: min(calc(100vw - 2 * var(--gutter)), calc(100svh - var(--header-h) - 9rem), 760px);
   position: relative;
   display: grid;
   place-items: center;
   min-height: 100svh;
-  padding: calc(var(--header-h) + var(--space-md)) var(--gutter) calc(var(--space-xl) + var(--space-2xl) - var(--space-lg));
+  padding: calc(var(--header-h) + var(--space-xs)) var(--gutter) calc(var(--space-2xl) + var(--space-sm));
   overflow: clip;
-  background: var(--color-night);
-  color: var(--color-on-night);
+  /* one flat ground, the very colour of the logo's marble, so the square has no edge */
+  background: var(--color-marble);
+  color: var(--color-ink);
   text-align: center;
-}
-
-/* the photo is blurred in the file (desk-blur-*.webp), so scrolling never runs a filter */
-.hero-photo,
-.hero-veil {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-.hero-photo img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 44% 30%;
-}
-/* the cover: night laid over the desk, thinner at the edges where the photo shows through,
-   with the sun's warmth on it behind the mark; the text column stays dark enough for cream at 7:1 */
-.hero-veil {
-  --veil-shape: ellipse 64% 72% at 50% 52%;
-  opacity: 0.94;
-  background:
-    radial-gradient(ellipse 30rem 22rem at 50% 24%,
-      color-mix(in oklch, var(--color-accent) 20%, transparent),
-      transparent 70%),
-    radial-gradient(var(--veil-shape),
-      color-mix(in oklch, var(--color-night) 95%, transparent) 56%,
-      color-mix(in oklch, var(--color-shade) 76%, transparent) 100%);
 }
 
 .hero-inner {
@@ -372,74 +354,31 @@ p:last-child { margin-bottom: 0; }
   display: grid;
   justify-items: center;
   width: 100%;
-  max-width: 40rem;
 }
 
 .hero-mark { max-width: none; margin: 0; }
-.hero-mark .logo {
-  width: clamp(180px, min(24vw, 24svh), 300px);
+/* the square's edges fade into the marble, so the logo lies on the page and not on a card */
+.hero-logo {
+  width: var(--logo);
   height: auto;
-  overflow: visible;
+  aspect-ratio: 1;
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(transparent, #000 3%, #000 93%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(90deg, transparent, #000 9%, #000 91%, transparent),
+    linear-gradient(transparent, #000 3%, #000 93%, transparent);
+  mask-composite: intersect;
 }
 
-/* the logo, layer by layer, in the colours of the brand's own mark for a dark ground (logo-on-blue.svg) */
-#logo-rays path { fill: none; stroke: var(--color-accent); stroke-width: 4.2; stroke-linecap: round; }
-#logo-sun { fill: var(--color-accent); }
-#logo-book path,
-.word-name { fill: var(--color-on-night); }
-.word-academy { fill: var(--color-accent); }
-#logo-pages path { fill: none; stroke: var(--color-field); stroke-width: 2.6; stroke-linecap: round; }
-/* the gap between the pages and the cover, in the cover's own night */
-#logo-pages .page-seam { stroke: var(--color-night); stroke-width: 3.8; stroke-linecap: butt; }
-
-/* the gold diamond between the mark and the ayah */
-.hero-rule {
-  position: relative;
-  display: block;
-  width: 5.5rem;
-  height: 9px;
-  margin: var(--space-md) 0 var(--space-2xs);
-  background:
-    linear-gradient(var(--color-accent), var(--color-accent)) 0 50% / 2.25rem 1px no-repeat,
-    linear-gradient(var(--color-accent), var(--color-accent)) 100% 50% / 2.25rem 1px no-repeat;
-}
-.hero-rule::before {
-  content: "";
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  width: 6px;
-  height: 6px;
-  border: 1px solid var(--color-accent);
-  transform: translate(-50%, -50%) rotate(45deg);
-}
-
-/* the ayah as printed in the Madinah Mushaf, in two lines broken at its own pause */
-.hero-ayah[lang] {
-  margin: 0;
-  font-family: var(--font-quran);
-  font-size: clamp(1.9rem, 3.4vw + 0.6rem, 3.4rem);
-  line-height: 1.9;
-  color: var(--color-on-night);
-  overflow-wrap: normal;
-}
-.hero-ayah p { max-width: none; }
-.ayah-line { display: block; }
-
-.hero-meaning {
-  max-width: 40rem;
-  margin-top: var(--space-xs);
+/* one line on the lessons, tucked into the empty marble under the logo's gold rule */
+.hero-about {
+  max-width: 34rem;
+  margin-top: calc(var(--logo) * -0.06);
   font-size: var(--text-lead);
   line-height: 1.5;
-  color: var(--color-on-night);
-  text-wrap: balance;
-}
-.hero-about {
-  max-width: 32rem;
-  margin-top: var(--space-md);
-  font-size: var(--text-md);
-  line-height: 1.5;
-  color: var(--color-on-night-2);
+  color: var(--color-ink-2);
   text-wrap: balance;
 }
 
@@ -452,7 +391,7 @@ p:last-child { margin-bottom: 0; }
   bottom: var(--space-lg);
   width: 1px;
   height: var(--cue);
-  background: var(--color-accent);
+  background: var(--color-gold-ink);
 }
 .scroll-cue::after {
   content: "";
@@ -462,7 +401,7 @@ p:last-child { margin-bottom: 0; }
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--color-accent-2);
+  background: var(--color-accent);
 }
 /* two runs, under five seconds, then the bead rests at the top */
 @media (prefers-reduced-motion: no-preference) {
@@ -474,50 +413,27 @@ p:last-child { margin-bottom: 0; }
   100% { transform: translateY(calc(var(--cue) - 5px)); opacity: 0; }
 }
 
-/* phones: the meaning runs to six lines, so the text steps down a size and the gaps close up */
+/* phones: the logo takes the whole width, its faded edges run off the screen */
 @media (max-width: 47.99rem) {
-  .hero { padding-top: calc(var(--header-h) + var(--space-xs)); padding-bottom: calc(var(--space-xl) * 2); }
-  /* the column fills the width on a phone: the light centre is wider than it is tall */
-  .hero-veil { --veil-shape: ellipse 115% 78% at 50% 54%; }
-  .hero-ayah[lang] { line-height: 1.75; }
-  .hero-meaning { font-size: var(--text-md); line-height: 1.45; }
-  .hero-about { font-size: 1rem; }
+  .hero {
+    --logo: min(100vw, calc(100svh - var(--header-h) - 10rem));
+    padding-inline: 0;
+    padding-bottom: calc(var(--space-xl) * 2);
+  }
+  .hero-about { padding-inline: var(--gutter); font-size: var(--text-md); }
 }
-/* short screens: the mark and the ayah step down so the screen still holds everything */
+/* short screens: the thread steps in */
 @media (max-height: 48rem) {
   .hero { padding-bottom: var(--space-2xl); }
-  .hero-mark .logo { width: clamp(132px, min(24vw, 21svh), 240px); }
-  .hero-rule { margin-block: var(--space-xs) 0; }
-  .hero-ayah[lang] { font-size: clamp(1.6rem, 2.6vw + 0.6rem, 2.8rem); line-height: 1.75; }
-  .hero-meaning { font-size: var(--text-md); line-height: 1.45; }
-  .hero-about { margin-top: var(--space-sm); }
+  .hero-about { font-size: var(--text-md); line-height: 1.45; }
   .scroll-cue { --cue: var(--space-lg); bottom: var(--space-md); }
 }
 
 /* with script: the first screen waits for main.js to bring it in; if main.js never runs, it shows itself */
-.intro #logo-rays,
-.intro #logo-sun,
-.intro #logo-book path,
-.intro #logo-pages,
-.intro #logo-word,
+.intro .hero-logo,
 .intro .hero [data-intro] { opacity: 0; animation: intro-wake 1ms 3s forwards; }
 @keyframes intro-wake { to { opacity: 1; } }
-
-/* the scene (main.js adds .is-scene): #about lies over the hero, cut to the book by clip-path */
-.is-scene .hero { height: 100svh; min-height: 0; }
-/* the page lies under the masthead while it is pinned, so its heading starts below the masthead */
-.is-scene .doubts { z-index: 1; min-height: 100svh; margin-top: -100svh; padding-top: calc(var(--header-h) + var(--space-xl)); }
-.is-scene .hero-inner,
-.is-scene .scroll-cue { pointer-events: none; }
-/* the page's own content waits inside the book and rises in at the end of the scene */
-.is-scene .doubts :is(h2, .doubts-text > p, .notes-title, .notes, .ladder, .enroll-line) { opacity: 0; transform: translateY(32px); }
-/* only while the scene runs */
-.is-playing .doubts { will-change: clip-path; }
-.is-playing .hero-photo,
-.is-playing .hero-veil,
-.is-playing .hero-inner > *,
-.is-playing .doubts .wrap > *,
-.is-playing .doubts-text > * { will-change: transform, opacity; }
+.hero.is-playing .hero-inner { will-change: transform, opacity; }
 
 /* ---------- Turning the page (View Transitions, main.js) ----------
    Arabic books bind on the right: the page lifts from its left edge and turns over the right one.
@@ -552,9 +468,8 @@ p:last-child { margin-bottom: 0; }
   to { opacity: 1; transform: none; }
 }
 
-/* ---------- Doubts: the blue page the book opens into, notes in the margin ---------- */
-/* the ground is the logo's own blue, the same fill as the book, so the opening leaves no seam.
-   Contrast on --color-field: head and answers 8.1, text 6.1, notes 5.6, gold 4.6 */
+/* ---------- Doubts: the first green page, notes in the margin ---------- */
+/* the ground is the green of the logo's book */
 .doubts {
   --color-focus: var(--color-focus-night);
   --rule-on-field: color-mix(in oklch, var(--color-on-field-2) 30%, var(--color-field));
@@ -562,16 +477,6 @@ p:last-child { margin-bottom: 0; }
   padding-block: var(--section);
   background: var(--color-field);
   color: var(--color-on-field-2);
-}
-/* the blue page ends on the Mushaf's double gold rule */
-.doubts::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 6px;
-  background:
-    linear-gradient(var(--color-accent), var(--color-accent)) 0 0 / 100% 1px no-repeat,
-    linear-gradient(var(--color-accent), var(--color-accent)) 0 100% / 100% 2px no-repeat;
 }
 .doubts h2 { color: var(--color-on-night); }
 .doubts-grid { display: grid; gap: var(--space-2xl); }
@@ -639,7 +544,7 @@ p:last-child { margin-bottom: 0; }
   gap: var(--space-sm) var(--space-lg);
   margin-top: var(--space-2xl);
 }
-/* the outline button, turned for the blue ground */
+/* the outline button, turned for the green ground */
 .doubts .btn-outline { border-color: var(--color-on-field-2); color: var(--color-on-night); }
 .doubts .btn-outline:hover { background: var(--color-on-night); border-color: var(--color-on-night); color: var(--color-field); }
 .doubts .btn-outline:active { background: var(--color-on-field-2); border-color: var(--color-on-field-2); color: var(--color-field); }
@@ -699,11 +604,12 @@ p:last-child { margin-bottom: 0; }
 .rules { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--space-lg); }
 .rule h3 { font-size: var(--fs-lead); margin-bottom: var(--space-xs); }
 .rule p { max-width: 36ch; }
-/* a highlighter stroke in the letter's own colour, as in a notebook */
-.marker { padding: 0 .15em; box-shadow: inset 0 -.42em 0 var(--hl); }
-.rule-q { --hl: var(--hl-q); }
-.rule-s { --hl: var(--hl-s); }
-.rule-g { --hl: var(--hl-g); }
+/* a dot in the letter's own colour ties the rule to its place in the ayah; no stripe under the word */
+.marker { display: inline-flex; align-items: center; gap: .5em; }
+.marker::before { content: ""; flex: none; width: .6em; height: .6em; border-radius: 50%; background: var(--dot); }
+.rule-q { --dot: var(--tj-q); }
+.rule-s { --dot: var(--tj-s); }
+.rule-g { --dot: var(--tj-g); }
 
 /* ---------- Teacher ---------- */
 .teacher {
@@ -727,7 +633,7 @@ p:last-child { margin-bottom: 0; }
   font-size: clamp(2rem, 1.4rem + 2.4vw, 3.25rem);
   line-height: 1.7;
   text-align: left;
-  /* the logo's gold, as the ladder letters on the same blue ground */
+  /* the logo's gold, as the ladder letters on the same green ground */
   color: var(--color-accent);
 }
 .hadith blockquote p:not(.hadith-ar) { font-size: var(--fs-lead); line-height: 1.45; max-width: 36ch; }
@@ -838,7 +744,7 @@ p:last-child { margin-bottom: 0; }
   .steps .cta-row .btn { width: 100%; }
 }
 
-/* each option is a whole tappable chip, the chosen one filled with the blue */
+/* each option is a whole tappable chip, the chosen one filled with the green */
 .choice { margin: var(--space-lg) 0 0; padding: 0; border: 0; min-width: 0; display: flex; flex-wrap: wrap; gap: var(--space-xs); }
 .choice legend { margin-bottom: var(--space-xs); padding: 0; font-size: var(--fs-small); color: var(--grey-text); }
 .choice label {
@@ -854,7 +760,7 @@ p:last-child { margin-bottom: 0; }
   cursor: pointer;
   transition: background-color var(--dur-short) var(--ease-out), border-color var(--dur-short) var(--ease-out), color var(--dur-short) var(--ease-out);
 }
-.choice label:hover { border-color: var(--blue); }
+.choice label:hover { border-color: var(--green); }
 .choice input {
   appearance: none;
   flex: none;
@@ -865,8 +771,8 @@ p:last-child { margin-bottom: 0; }
   background: var(--color-paper);
   cursor: pointer;
 }
-.choice input:checked { border-color: var(--color-paper); box-shadow: inset 0 0 0 3px var(--blue); background: var(--color-paper); }
-.choice label:has(input:checked) { font-weight: 700; background: var(--blue); border-color: var(--blue); color: var(--color-paper); }
+.choice input:checked { border-color: var(--color-paper); box-shadow: inset 0 0 0 3px var(--green); background: var(--color-paper); }
+.choice label:has(input:checked) { font-weight: 700; background: var(--green); border-color: var(--green); color: var(--color-paper); }
 .choice label:has(input:focus-visible) { outline: 2px solid var(--color-focus); outline-offset: 2px; }
 .choice input:focus-visible { outline: none; }
 .choice input:disabled { opacity: 0.55; cursor: not-allowed; }
@@ -951,7 +857,7 @@ p:last-child { margin-bottom: 0; }
 .faq details[open] summary::after { transform: rotate(45deg); }
 .faq details p { padding-bottom: var(--space-lg); }
 
-/* ---------- Blue pages: teacher, prices, FAQ (the same field as .doubts) ---------- */
+/* ---------- Green pages: teacher, prices, FAQ (the same field as .doubts) ---------- */
 .teacher, .prices, .faq {
   --color-focus: var(--color-focus-night);
   --line: color-mix(in oklch, var(--color-on-field-2) 30%, var(--color-field));
@@ -962,13 +868,11 @@ p:last-child { margin-bottom: 0; }
 }
 .teacher h2, .teacher h3, .prices h2, .prices h3, .faq h2, .faq summary,
 .price-num, .teacher-body > p:not(.teacher-role), .hadith blockquote p:not(.hadith-ar) { color: var(--color-on-night); }
-.teacher .text-link, .prices .text-link, .faq .text-link { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
-.teacher .text-link:hover { color: var(--color-accent-2); }
-.prices .btn-outline { border-color: var(--color-on-field-2); color: var(--color-on-night); }
-.prices .btn-outline:hover { background: var(--color-on-night); border-color: var(--color-on-night); color: var(--color-field); }
-.prices .btn-outline:active { background: var(--color-on-field-2); border-color: var(--color-on-field-2); color: var(--color-field); }
+.teacher .btn-outline, .prices .btn-outline { border-color: var(--color-on-field-2); color: var(--color-on-night); }
+.teacher .btn-outline:hover, .prices .btn-outline:hover { background: var(--color-on-night); border-color: var(--color-on-night); color: var(--color-field); }
+.teacher .btn-outline:active, .prices .btn-outline:active { background: var(--color-on-field-2); border-color: var(--color-on-field-2); color: var(--color-field); }
 
-/* ---------- Footer: the night binding closes the book ---------- */
+/* ---------- Footer: the green binding closes the book ---------- */
 .site-footer {
   --color-focus: var(--color-focus-night);
   --line: color-mix(in oklch, var(--color-on-night-2) 22%, var(--color-night));
@@ -1005,14 +909,8 @@ p:last-child { margin-bottom: 0; }
   font-size: var(--fs-small);
   color: var(--grey-text);
 }
-/* the logo keeps its own cream ground */
-.logo-plate {
-  display: block;
-  padding: var(--space-2xs) var(--space-xs);
-  border-radius: var(--radius-control);
-  background: var(--color-paper);
-}
-.logo-plate img { width: 120px; height: auto; }
+/* the footer closes on the masthead's name, not on a square of marble */
+.footer-brand { margin-right: 0; }
 
 /* ---------- Tablet ---------- */
 @media (min-width: 720px) {
@@ -1071,19 +969,16 @@ p:last-child { margin-bottom: 0; }
     border: 0;
     font: 600 var(--text-sm)/1.2 var(--font-ui);
     color: var(--color-on-night-2);
-    text-decoration: underline;
-    text-decoration-color: transparent;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.45em;
-    transition: color var(--dur-short) var(--ease-out), text-decoration-color var(--dur-short) var(--ease-out);
+    transition: color var(--dur-short) var(--ease-out);
   }
-  .site-nav a:hover { color: var(--color-on-night); text-decoration-color: var(--color-on-night-2); }
-  .site-nav a[aria-current="location"] { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
+  /* no underline: the current section is told by the gold alone */
+  .site-nav a:hover { color: var(--color-on-night); }
+  .site-nav a[aria-current="location"] { color: var(--color-accent); }
   .site-nav.is-open li { animation: none; }
-  .brand img { width: 150px; }
+  .brand-en { font-size: 1.1875rem; }
 
-  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-on-night-2); }
-  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-on-night); text-decoration-color: var(--color-accent); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-ink-2); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-ink); }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -88,12 +88,11 @@ function setupNav() {
   });
 }
 
-// Шапка прозрачная, пока виден первый экран (класс on-hero на <html> ставит boot.js), дальше ночная.
-// Во время сцены перехода её переключает сама сцена; без сцены — этот наблюдатель за hero.
+// Шапка прозрачная, пока виден первый экран (класс on-hero на <html> ставит boot.js), дальше зелёная.
 const setOnHero = (on) => document.documentElement.classList.toggle('on-hero', on);
 
-// Без сцены hero прокручивается под шапкой: она темнеет, как только логотип первого экрана
-// начинает уходить под неё, и логотип переходит в шапку, а текст hero не бежит под прозрачными ссылками.
+// Hero прокручивается под шапкой: она темнеет, как только логотип первого экрана начинает уходить
+// под неё, и название переходит в шапку, а текст hero не бежит под прозрачными ссылками.
 function watchHero() {
   const mark = document.querySelector('.hero-mark');
   const header = document.querySelector('.site-header');
@@ -157,38 +156,10 @@ function setupButtonFeedback() {
   });
 }
 
-// ---------- Первый экран и переход: синяя книга логотипа становится вторым блоком ----------
-// Сцена на GSAP + ScrollTrigger (vendor/gsap). #about лежит поверх hero, обрезанный clip-path по силуэту
-// книги; при прокрутке книга раскрывается и растягивается до краёв экрана. Без GSAP, без JS, при
-// «уменьшить движение» и на очень низких экранах hero и #about просто идут друг за другом.
-
-// Силуэт книги: 16 вершин в единицах viewBox логотипа, по часовой от корешка сверху; 8 — корешок-«V» снизу.
-// Взяты с контура #logo-book (страницы и обложка), отклонение от кривых не больше 1.2 единицы.
-const BOOK = [[160, 140], [177.7, 131.1], [201.6, 125.5], [228, 125], [250, 156], [257, 167], [214.6, 165.6], [179.7, 170.9],
-  [160, 177.6], [140.3, 170.9], [105.4, 165.6], [63, 167], [70, 156], [92, 125], [118.4, 125.5], [142.3, 131.1]];
-// Куда вершина приходит за краем экрана: x — доля полуширины от середины, y — 0 верх, 1 низ.
-// Контур тот же, что у книги: выемка корешка сверху, корешок-«V» снизу ниже углов и уходит за край последним.
-// Ни одна вершина не меняет сторону, поэтому при растяжении контур не ломается и не выворачивается.
-// Вершина на боковой стороне (4 и 12) везде стоит на той же доле стороны, что в книге, и сторона остаётся прямой.
-const EDGE = [[0, 0], [0.26, -0.02], [0.61, -0.04], [1, -0.05], [1, 0.725], [1, 1], [0.56, 1.03], [0.2, 1.06],
-  [0, 1.08], [-0.2, 1.06], [-0.56, 1.03], [-1, 1], [-1, 0.725], [-1, -0.05], [-0.61, -0.04], [-0.26, -0.02]];
-// Нижний край книги: по верхнему шапка понимает, что синяя страница до неё дошла.
-const LOWER = BOOK.map((_, i) => (i >= 4 && i <= 12 ? 1 : 0));
-// Плавный вход и выход на отрезке [a, b] общего прогресса сцены.
-const smooth = (a, b, t) => {
-  const x = Math.min(1, Math.max(0, (t - a) / (b - a)));
-  return x * x * (3 - 2 * x);
-};
-// Раскрытая книга: половинки расходятся от корешка, верхний край выпрямляется наполовину.
-const OPENED = BOOK.map(([x, y], i) => [160 + (x - 160) * 1.4, LOWER[i] ? y : 125 + (y - 125) * 0.45]);
-[[4, 3, 5], [12, 13, 11]].forEach(([i, a, b]) => {
-  const k = (BOOK[i][1] - BOOK[a][1]) / (BOOK[b][1] - BOOK[a][1]);
-  OPENED[i] = OPENED[a].map((v, j) => v + (OPENED[b][j] - v) * k);
-});
-const OPENED_WIDTH = 1.4 * (257 - 63);
-const BOOK_CENTER = [160, 152];
-const SUN_ORIGIN = '160 124';
-const SPINE_ORIGIN = '160 154';
+// ---------- Первый экран: логотип на мраморе ----------
+// GSAP (vendor/gsap). При загрузке логотип проступает из мрамора, за ним строка о занятиях и нить прокрутки.
+// При прокрутке первый экран уходит медленнее страницы, логотип чуть уменьшается и тает.
+// Без GSAP, без JS и при «уменьшить движение» всё видно сразу и просто прокручивается.
 
 // Кривая --ease-out из tokens.css, чтобы анимация шла тем же ходом, что и CSS-переходы.
 function tokenEase(CustomEase, name) {
@@ -199,243 +170,44 @@ function tokenEase(CustomEase, name) {
 
 function setupOpening() {
   const root = document.documentElement;
-  const opening = document.querySelector('[data-opening]');
-  const hero = opening?.querySelector('.hero');
-  const about = opening?.querySelector('#about');
-  const book = hero?.querySelector('#logo-book');
-  const header = document.querySelector('.site-header');
+  const hero = document.querySelector('.hero');
+  const inner = hero?.querySelector('.hero-inner');
+  const logo = hero?.querySelector('.hero-logo');
   const { gsap, ScrollTrigger, CustomEase } = window;
-  if (!book || !about || !gsap || !ScrollTrigger || !CustomEase) {
+  watchHero();
+  if (!inner || !logo || !gsap || !ScrollTrigger || !CustomEase) {
     root.classList.remove('intro');
-    watchHero();
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger, CustomEase);
   ScrollTrigger.config({ ignoreMobileResize: true });
-  const easeOut = tokenEase(CustomEase, '--ease-out');
-
-  const all = (sel) => [...hero.querySelectorAll(sel)];
-  const rays = all('#logo-rays path');
-  const sun = hero.querySelector('#logo-sun');
-  const halves = all('.book-left, .book-right');
-  const cover = hero.querySelector('.book-cover');
-  const pages = hero.querySelector('#logo-pages');
-  const seam = pages.querySelector('.page-seam');
-  const lines = [...pages.querySelectorAll('.page-line')];
-  const word = hero.querySelector('#logo-word');
-  const text = all('.hero-inner [data-intro]');
-  const cue = hero.querySelector('.scroll-cue');
-  const photo = hero.querySelector('.hero-photo');
-  const veil = hero.querySelector('.hero-veil');
-  const content = [...about.querySelectorAll('h2, .doubts-text > p, .notes-title, .notes, .ladder, .enroll-line')];
-  // размеры книги в единицах логотипа: до любых трансформаций
-  const unit = book.getBBox();
-
-  // Точки опоры задаются один раз, пока у частей нет трансформаций: если менять их на ходу, GSAP
-  // сдвигает элемент, чтобы тот не прыгнул, и сдвиг остаётся. Масштаб не доходит до нуля: из нулевой
-  // матрицы опору уже не восстановить при пересчёте.
-  const NONE = 0.001;
-  gsap.set(rays, { svgOrigin: SUN_ORIGIN });
-  gsap.set(halves, { svgOrigin: SPINE_ORIGIN });
-  gsap.set(lines, { svgOrigin: '160 168' });
-
-  // Появление при загрузке, ≈1.6 с: книга раскрывается, солнце поднимается из-за неё, лучи вырастают,
-  // затем аят, смысл и описание. Только на самом верху страницы и без «уменьшить движение».
-  root.classList.remove('intro');
-  // Сцена трогает те же части, что и появление; её шаги добавляются, когда появление закончилось.
-  let afterIntro = null;
   const motion = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
-  const intro = motion && window.scrollY < 4
-    ? gsap.timeline({ defaults: { ease: easeOut }, onComplete: () => afterIntro?.() })
-      .fromTo([...halves, cover, pages], { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.5, ease: 'power1.out' }, 0)
-      .fromTo(halves, { scaleX: 0.85 }, { scaleX: 1, duration: 0.8 }, 0)
-      .fromTo(sun, { y: 34 }, { y: 0, duration: 0.9 }, 0.15)
-      .fromTo(rays, { scale: NONE }, { scale: 1, duration: 0.6, stagger: { each: 0.04, from: 'center' } }, 0.45)
-      .fromTo(word, { autoAlpha: 0, y: 6 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.55)
-      .fromTo(text, { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6, stagger: 0.12 }, 0.7)
-      .fromTo(cue, { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.1)
-    : null;
 
-  const buildScene = (ctx, end, narrow) => {
-    opening.classList.add('is-scene');
-    // Один прогресс на весь силуэт: раскрытие, рост и растяжение до краёв — его плавные доли,
-    // поэтому все вершины идут вместе и контур не ломается.
-    const geo = { p: 0 };
-    let box = null;
-    let trigger = null;
+  // Появление, ≈1.6 с: только на самом верху страницы. Начальные значения ставятся до снятия .intro, без мигания.
+  if (motion && window.scrollY < 4) {
+    gsap.timeline({ defaults: { ease: tokenEase(CustomEase, '--ease-out') } })
+      .fromTo(logo, { autoAlpha: 0, scale: 0.95 }, { autoAlpha: 1, scale: 1, duration: 1.3 }, 0)
+      .fromTo(hero.querySelectorAll('.hero-inner [data-intro]'), { opacity: 0, y: 12 }, { opacity: 1, y: 0, duration: 0.6 }, 0.7)
+      .fromTo(hero.querySelector('.scroll-cue'), { opacity: 0 }, { opacity: 1, duration: 0.5 }, 1.1);
+  }
+  root.classList.remove('intro');
+  if (!motion) return;
 
-    // Силуэт считается от живого #logo-book, поэтому совпадает с логотипом на любом экране.
-    const measure = () => {
-      const b = book.getBoundingClientRect();
-      const a = about.getBoundingClientRect();
-      const h = hero.getBoundingClientRect();
-      const s = b.width / unit.width;
-      box = {
-        s,
-        x: b.left - a.left - unit.x * s,
-        y: b.top - a.top - unit.y * s,
-        left: h.left - a.left,
-        top: h.top - a.top,
-        w: h.width,
-        h: h.height,
-        grow: Math.max(1, (h.width * (narrow ? 0.72 : 0.6)) / (OPENED_WIDTH * s)),
-        header: header?.offsetHeight ?? 0,
-      };
-    };
-
-    const draw = () => {
-      if (!box) return;
-      const { p } = geo;
-      if (p >= 1) {
-        about.style.clipPath = 'none';
-        setOnHero(false);
-        return;
-      }
-      const { s, x, y, left, top, w, h, grow } = box;
-      const [cx, cy] = BOOK_CENTER;
-      const open = smooth(0, 0.55, p);
-      // рост в логарифме: на глаз книга приближается с ровной скоростью, без рывка в конце
-      const g = grow ** smooth(0, 0.7, p);
-      const t = smooth(0.25, 1, p);
-      const pad = 4;
-      // ниже края: на телефоне видимая высота бывает больше 100svh
-      const bottom = h * 1.12 + pad;
-      // При быстром пролистывании прокрутка уходит за конец закрепления раньше, чем сцена (scrub) догонит:
-      // страница уже едет вверх. Нижний край тогда держится низа экрана, а не страницы, иначе острый
-      // корешок-«V» выезжает на экран и в конце разом сменяется ровным краем.
-      const over = trigger ? Math.max(0, window.scrollY - trigger.end) : 0;
-      let edge = Infinity;
-      const points = BOOK.map(([bx, by], i) => {
-        const ux = bx + (OPENED[i][0] - bx) * open;
-        const uy = by + (OPENED[i][1] - by) * open;
-        const px = x + (cx + (ux - cx) * g) * s;
-        const py = y + (cy + (uy - cy) * g) * s;
-        const tx = left + w / 2 + EDGE[i][0] * (w / 2 + pad);
-        const ty = top - pad + EDGE[i][1] * (bottom + pad) + LOWER[i] * over;
-        const fy = py + (ty - py) * t;
-        if (!LOWER[i]) edge = Math.min(edge, fy - top);
-        return `${(px + (tx - px) * t).toFixed(1)}px ${fy.toFixed(1)}px`;
-      });
-      about.style.clipPath = `polygon(${points.join(', ')})`;
-      // шапка темнеет, когда синяя страница дошла до неё
-      setOnHero(edge > box.header);
-    };
-
-    measure();
-    draw();
-
-    // Длина сцены в условных секундах: доля прогресса прокрутки × D.
-    // Все шаги — to(): при пересчёте (invalidateOnRefresh) начальные значения берутся заново из покоя;
-    // скрытое до 0.75 содержимое #about задано в CSS (.is-scene).
-    const D = 3;
-    const at = (p) => p * D;
-    const tl = gsap.timeline({
-      defaults: { ease: 'none' },
-      onUpdate: draw,
-      scrollTrigger: {
-        trigger: opening,
-        start: 'top top',
-        end,
-        pin: true,
-        scrub: 1,
-        anticipatePin: 1,
-        invalidateOnRefresh: true,
-        // Сцена не застревает на полпути: когда прокрутка остановилась, она доводится до конца
-        // в ту сторону, куда листали — вперёд к синей странице или назад к первому экрану.
-        snap: {
-          snapTo: [0, 1],
-          directional: true,
-          delay: 0.12,
-          duration: { min: 0.35, max: 0.9 },
-          ease: 'power2.inOut',
-        },
-        onRefresh: () => { measure(); draw(); },
-        // прокрутка во время появления доводит его до конца; первый вызов при создании не в счёт
-        onUpdate: () => { if (window.scrollY > 1 && intro?.isActive()) intro.progress(1); },
-        onToggle: (self) => opening.classList.toggle('is-playing', self.isActive),
-      },
-    });
-    trigger = tl.scrollTrigger;
-
-    // 0 → 0.2: текст уходит вверх и тает; лучи втягиваются в солнце, солнце опускается в разворот и гаснет.
-    // Эти части только что двигало появление: шаги встают в сцену, когда оно закончилось (или прервано
-    // прокруткой), чтобы точкой покоя для них был финальный кадр появления, а не промежуточный.
-    let lightAdded = false;
-    const addLight = () => ctx.add(() => {
-      if (lightAdded) return;
-      lightAdded = true;
-      tl
-        .to([...text, cue], { y: -24, opacity: 0, duration: at(0.22), ease: 'sine.in' }, 0.001)
-        .to(rays, { scale: NONE, duration: at(0.18), ease: 'sine.in' }, 0.001)
-        .to(sun, { y: 38, autoAlpha: 0, duration: at(0.22), ease: 'sine.inOut' }, at(0.02))
-        .to(word, { autoAlpha: 0, duration: at(0.16), ease: 'sine.in' }, 0.001);
-    });
-
-    tl
-      // Кремовая книга тает над синей страницей той же формы: книга наливается синим и только потом раскрывается.
-      .to(book, { autoAlpha: 0, duration: at(0.12), ease: 'sine.inOut' }, 0.001)
-      // 0.12 → 0.94: книга раскрывается, растёт и растягивается до краёв одним движением;
-      // плавность входа и выхода заложена в draw(), поэтому сам твин линейный
-      .to(geo, { p: 1, duration: at(0.82) }, at(0.12))
-      // листы веером разлетаются и тают, фото и вуаль уходят назад
-      .to(seam, { autoAlpha: 0, duration: at(0.1), ease: 'sine.inOut' }, at(0.12))
-      .to(lines, {
-        x: (_, el) => Number(el.dataset.side) * 24,
-        rotation: (_, el) => Number(el.dataset.side) * -8,
-        autoAlpha: 0,
-        duration: at(0.3),
-        stagger: at(0.02),
-        ease: 'sine.inOut',
-      }, at(0.14))
-      .to(photo, { scale: 1.06, duration: at(0.6), ease: 'sine.inOut' }, at(0.12))
-      .to(veil, { opacity: 1, duration: at(0.6), ease: 'sine.inOut' }, at(0.12))
-      // 0.66 → 1: содержимое #about поднимается изнутри
-      .to(content, { y: 0, opacity: 1, duration: at(0.22), stagger: at(0.03), ease: 'power2.out' }, at(0.66))
-      .set({}, {}, D);
-
-    if (intro && intro.progress() < 1) afterIntro = addLight;
-    else addLight();
-
-    // Фокус с клавиатуры внутри ещё закрытой страницы: сцена доводится до конца, чтобы было видно, где он.
-    const onFocus = () => {
-      const st = tl.scrollTrigger;
-      if (st && st.progress < 1) window.scrollTo(0, Math.ceil(st.end));
-    };
-    about.addEventListener('focusin', onFocus);
-
-    return () => {
-      afterIntro = null;
-      about.removeEventListener('focusin', onFocus);
-      opening.classList.remove('is-scene', 'is-playing');
-      about.style.clipPath = '';
-    };
-  };
-
-  const mm = gsap.matchMedia();
-  mm.add({
-    scene: '(prefers-reduced-motion: no-preference) and (min-height: 30rem)',
-    calm: '(prefers-reduced-motion: reduce), (max-height: 29.99rem)',
-    narrow: '(max-width: 47.99rem)',
-  }, (ctx) => {
-    const { scene, narrow } = ctx.conditions;
-    if (scene) return buildScene(ctx, narrow ? '+=110%' : '+=140%', narrow);
-
-    // Без сцены: hero и #about подряд, при входе #about короткий переход из бумаги в синий.
-    const stop = watchHero();
-    if (!motion) {
-      gsap.fromTo(about, { opacity: 0 }, {
-        opacity: 1,
-        duration: 0.3,
-        ease: 'none',
-        scrollTrigger: { trigger: about, start: 'top 85%', once: true },
-      });
-    }
-    return stop;
+  gsap.to(inner, {
+    y: () => hero.offsetHeight * 0.22,
+    scale: 0.94,
+    opacity: 0,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: hero,
+      start: 'top top',
+      end: 'bottom top',
+      scrub: true,
+      invalidateOnRefresh: true,
+      onToggle: (self) => hero.classList.toggle('is-playing', self.isActive),
+    },
   });
-
-  // Арабский шрифт меняет высоту блока: позиции пересчитываются, когда шрифты готовы.
-  document.fonts?.ready.then(() => ScrollTrigger.refresh());
 }
 
 // После прыжка по якорю сцена сразу встаёт в своё положение, без догоняющей прокрутки.
