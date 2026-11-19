@@ -10,8 +10,8 @@
 /* Hallmark · dismissed render · the render tier has no puppeteer-core here; screenshots were taken with Playwright at localhost (.hallmark/after) */
 /* Hallmark · sweep · Floor 0 FAIL · Reflex 0 · finish-review: inline with design-review (no subagent), 3 fixed: the muted line on the veil 3.81 to 4.64:1 (the veil's light centre widened), the hero text under a clear header without the scene (the header darkens as the mark slides under it), the hero overflowing 375x667 and 360x740 (short-screen steps) · CLS 0 · CSP 0 violations · console clean */
 /* 18.11.2026 · rebrand: the new logo (white marble, deep green, gold) is the whole first screen; the palette moves from the old blue to its green and gold; the book-opening scene is retired with the old SVG mark */
-@import url("./tokens.css?v=20261119");
-@import url("./base.css?v=20261119");
+@import url("./tokens.css?v=20261119c");
+@import url("./base.css?v=20261119c");
 
 /* ---------- Fonts (local, /fonts, all OFL) ---------- */
 /* The Badr Book pair: Literata for heads and text (opsz 7 to 72, wght 200 to 900), Manrope for the controls and small labels (wght 200 to 800) */
@@ -224,6 +224,8 @@ p:last-child { margin-bottom: 0; }
 .brand, .header-cta { transition: opacity var(--dur-long) var(--ease-out), transform var(--dur-long) var(--ease-out), visibility 0s; }
 
 .js.on-hero .site-header:not(.is-menu)::before { opacity: 0; }
+/* over the blue photo the menu itself turns light */
+.js.on-hero .site-header:not(.is-menu) { color: var(--color-on-night); --color-focus: var(--color-focus-night); }
 .js.on-hero .site-header:not(.is-menu) .brand,
 .js.on-hero .site-header:not(.is-menu) .header-cta {
   opacity: 0;
@@ -341,22 +343,29 @@ p:last-child { margin-bottom: 0; }
   min-height: 100svh;
   padding: var(--header-h) var(--gutter) var(--space-xl);
   overflow: clip;
-  /* the logo's marble, carried across the whole screen; the emblem lies on it without its square */
-  background: var(--color-marble) url("assets/hero/marble-tall.webp") center / cover no-repeat;
-  color: var(--color-ink);
+  /* the teacher at his desk in his white qamis, blurred under a blue night; the emblem lies over it without its square */
+  --hero-blue-deep: oklch(18% 0.04 252);
+  background: var(--hero-blue-deep);
+  color: var(--color-on-night);
   text-align: center;
 }
-@media (min-aspect-ratio: 1/1) {
-  .hero { background-image: url("assets/hero/marble-wide.webp"); }
-}
-/* the soft light the logo's gold throws on the stone */
-.hero::before {
-  content: "";
+.hero-photo,
+.hero-veil {
   position: absolute;
   inset: 0;
-  z-index: 1;
-  background: radial-gradient(ellipse 60% 42% at 50% 40%, oklch(99% 0.01 80 / 0.85), oklch(99% 0.01 80 / 0) 100%);
-  pointer-events: none;
+  z-index: 0;
+}
+.hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 40% 30%;
+}
+/* the blue laid over the photo, even across the screen so the teacher in white shows through */
+.hero-veil {
+  background:
+    linear-gradient(oklch(22% 0.06 254 / 0.5), oklch(22% 0.06 254 / 0.5)),
+    radial-gradient(ellipse 70% 75% at 50% 48%, oklch(26% 0.07 254 / 0.22), oklch(18% 0.05 254 / 0.38));
 }
 
 .hero-inner {
@@ -369,30 +378,66 @@ p:last-child { margin-bottom: 0; }
 }
 
 .hero-mark { max-width: none; margin: 0; }
-.hero-logo { width: var(--logo); height: auto; aspect-ratio: 881 / 1125; }
+.hero-logo {
+  width: var(--logo);
+  height: auto;
+  aspect-ratio: 881 / 1125;
+  /* the emblem with its green letters turned cream for the blue (emblem-light-*), the gold unchanged; no glow */
+}
 
 .hero-about {
   max-width: 32rem;
   margin-top: var(--space-lg);
   font-size: var(--text-lead);
   line-height: 1.5;
-  color: var(--color-ink-2);
+  color: var(--color-on-night);
   text-wrap: balance;
+  text-shadow: 0 1px 12px oklch(18% 0.04 252 / 0.6);
 }
 
-/* the green of the calligraphy, the action of the first screen */
+/* the green of the calligraphy, a button for the light pages (the hero's own action is the gold one) */
 .btn-green { background: var(--color-green); border-color: var(--color-green); color: var(--color-paper); }
 .btn-green:hover { background: var(--color-ink); border-color: var(--color-ink); }
-.hero-cta { margin-top: var(--space-lg); min-height: 56px; padding-inline: var(--space-xl); font-size: var(--text-md); box-shadow: 0 10px 24px -14px oklch(22% 0.035 168 / 0.7); }
+/* the hero's action: a gold pill with the arrow in a dark round chip that steps forward on hover */
+.btn.hero-cta {
+  margin-top: var(--space-lg);
+  min-height: 60px;
+  padding: 6px 6px 6px var(--space-lg);
+  gap: var(--space-md);
+  border: 0;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(180deg, var(--color-accent-2), var(--color-accent));
+  color: var(--color-accent-ink);
+  font-size: var(--text-md);
+  letter-spacing: 0;
+  box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.35), 0 12px 28px -16px oklch(12% 0.04 252 / 0.9);
+  transition: transform var(--dur-short) var(--ease-out), box-shadow var(--dur-short) var(--ease-out), filter var(--dur-short) var(--ease-out);
+}
+.btn.hero-cta:hover { filter: brightness(1.06); transform: translateY(-1px); box-shadow: inset 0 1px 0 oklch(100% 0 0 / 0.35), 0 16px 32px -16px oklch(12% 0.04 252 / 0.95); }
+.btn.hero-cta:active { transform: translateY(1px); filter: none; }
+.hero-cta-arrow {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-accent-ink);
+  color: var(--color-accent-2);
+  transition: transform var(--dur-short) var(--ease-out);
+}
+.hero-cta:hover .hero-cta-arrow { transform: translateX(3px); }
+@media (max-width: 23.5rem) { .btn.hero-cta { gap: var(--space-sm); font-size: 0.9375rem; } }
 
 @media (max-width: 47.99rem) {
   .hero-about { font-size: var(--text-md); }
-  .hero-cta { width: min(100%, 22rem); padding-inline: var(--space-md); white-space: normal; }
+  .btn.hero-cta { width: min(100%, 22rem); justify-content: space-between; padding-left: var(--space-md); white-space: normal; text-align: left; }
 }
 @media (max-height: 44rem) {
   .hero { --logo: min(80vw, calc((100svh - 15.5rem) * 0.783), 440px); }
   .hero-about { margin-top: var(--space-md); font-size: 1rem; line-height: 1.45; }
-  .hero-cta { margin-top: var(--space-md); min-height: 52px; }
+  .btn.hero-cta { margin-top: var(--space-md); min-height: 54px; }
+  .hero-cta-arrow { width: 42px; height: 42px; }
 }
 
 /* with script: the first screen waits for main.js to bring it in; if main.js never runs, it shows itself */
@@ -927,6 +972,9 @@ p:last-child { margin-bottom: 0; }
   .site-nav a:hover { color: var(--color-ink); }
   .site-nav a[aria-current="location"] { color: var(--color-gold-ink); }
   .site-nav.is-open li { animation: none; }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a { color: var(--color-on-night-2); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a:hover { color: var(--color-on-night); }
+  .js.on-hero .site-header:not(.is-menu) .site-nav a[aria-current="location"] { color: var(--color-accent); }
   .brand-en { font-size: 1.1875rem; }
   .brand-mark { height: 46px; }
 }
